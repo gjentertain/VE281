@@ -2,12 +2,12 @@
 // Created by liu on 17-8-11.
 //
 
-#include <iostream>
 #include <cstdlib>
+#include <iostream>
 
 using namespace std;
 
-void bubble_sort(int arr[], int n)
+void bubble_sort(int arr[], const int n)
 {
     for (int i = n - 2; i >= 0; i--)
         for (int j = 0; j <= i; j++)
@@ -21,10 +21,13 @@ void insertion_sort(int arr[], const int n)
     {
         auto temp = arr[i];
         auto j = i;
-        while (j >= 0)
+        while (j >= 1)
         {
-            if (arr[j] > temp) j--;
-            else break;
+            if (arr[j - 1] > temp)
+            {
+                arr[j] = arr[j - 1];
+                j--;
+            } else break;
         }
         arr[j] = temp;
     }
@@ -60,7 +63,7 @@ void merge(int arr[], const int n, const int offset)
     delete[] temp;
 }
 
-void merge_sort(int arr[], int n)
+void merge_sort(int arr[], const int n)
 {
     if (n <= 1)return;
     auto offset = n / 2;
@@ -69,36 +72,81 @@ void merge_sort(int arr[], int n)
     merge(arr, n, offset);
 }
 
+int partition_extra(int arr[], int const n)
+{
+    auto temp = new int[n];
+    int i = 0, j = n - 1;
+    for (int k = 1; k < n; k++)
+    {
+        if (arr[k] < arr[0])temp[i++] = arr[k];
+        else temp[j--] = arr[k];
+    }
+    temp[i] = arr[0];
+    mem_copy(arr, temp, n);
+    delete[] temp;
+    return i;
+}
+
+int partition_in_place(int arr[], const int n)
+{
+    int i = 1, j = n - 1;
+    while (true)
+    {
+        while (i < n && arr[i] < arr[0])i++;
+        while (j >= 0 && arr[j] >= arr[0])j--;
+        if (i < j)swap(arr[i], arr[j]);
+        else break;
+    }
+    swap(arr[0], arr[j]);
+    return j;
+}
+
+void quick_sort(int arr[], const int n, int (*fn)(int *, const int))
+{
+    if (n <= 1)return;
+    int pivotat = rand() % n;
+    swap(arr[pivotat], arr[0]);
+    pivotat = fn(arr, n);
+    quick_sort(arr, pivotat, fn);
+    quick_sort(arr + pivotat + 1, n - 1 - pivotat, fn);
+}
+
+inline void quick_sort_extra(int arr[], const int n)
+{
+    quick_sort(arr, n, partition_extra);
+}
+
+inline void quick_sort_in_place(int arr[], const int n)
+{
+    quick_sort(arr, n, partition_in_place);
+}
+
 int main()
 {
+    void (*const sort_fns[6])(int *, const int) = {
+            bubble_sort,
+            insertion_sort,
+            selection_sort,
+            merge_sort,
+            quick_sort_extra,
+            quick_sort_in_place
+    };
     int m, n;
-    cin >> m >> n;
-    auto arr = new int[n];
-    switch (m)
+    cin >> m;
+    if (m >= 0 && m <= 5)
     {
-    case 0:
-        bubble_sort(arr, n);
-        break;
-    case 1:
-        insertion_sort(arr, n);
-        break;
-    case 2:
-        selection_sort(arr, n);
-        break;
-    case 3:
-        merge_sort(arr, n);
-        break;
-    case 4:
-        break;
-    case 5:
-        break;
-    default:
-        break;
+        cin >> n;
+        auto arr = new int[n];
+        for (int i = 0; i < n; i++)
+        {
+            cin >> arr[i];
+        }
+        sort_fns[m](arr, n);
+        for (int i = 0; i < n; i++)
+        {
+            cout << arr[i] << endl;
+        }
+        delete[] arr;
     }
-    for (int i = 0; i < n; i++)
-    {
-        cout << arr[i] << endl;
-    }
-    delete[] arr;
     return 0;
 }
