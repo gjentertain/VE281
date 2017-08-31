@@ -8,7 +8,7 @@
 #include <fstream>
 #include <iomanip>
 #include <algorithm>
-#include "../answer/sort.h"
+#include "../answer/sort_wrapper.h"
 
 using namespace std;
 

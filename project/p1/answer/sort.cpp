@@ -4,7 +4,7 @@
 
 #include <cstdlib>
 #include <iostream>
-#include "sort.h"
+#include "sort_wrapper.h"
 
 using namespace std;
 
