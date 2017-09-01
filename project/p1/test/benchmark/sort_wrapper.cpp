@@ -3,12 +3,28 @@
 #include <cstdlib>
 #include <string>
 #include <iostream>
+#include <algorithm>
 
 #include "../../answer/sort_wrapper.h"
 
 using namespace v8;
 using namespace std;
 using namespace node;
+
+void cpp_sort(int arr[], const int n)
+{
+    sort(arr, arr + n);
+}
+
+void (*const sort_fns[])(int *, const int) = {
+        bubble_sort,
+        insertion_sort,
+        selection_sort,
+        merge_sort,
+        quick_sort_extra,
+        quick_sort_in_place,
+        cpp_sort,
+};
 
 void Generate(const FunctionCallbackInfo<Value> &args)
 {
@@ -38,26 +54,30 @@ void Generate(const FunctionCallbackInfo<Value> &args)
     srand48(seed);
     delete[] str;
 
+    auto buf = Buffer::New(isolate, arg1 * 4);
+    auto localBuf = buf.ToLocalChecked();
+    auto data = (int32_t *) Buffer::Data(localBuf);
 
-    auto buf = ArrayBuffer::New(isolate, arg1 * 8);
-    auto arr = Int32Array::New(buf, 0, arg1 * 8);
+//    auto buf = ArrayBuffer::New(isolate, arg1 * 4);
+//    auto arr = Int32Array::New(buf, 0, arg1);
 
     for (uint32_t i = 0; i < arg1; i++)
     {
-        auto num = (int) mrand48();
-        arr->Set(i, Integer::New(isolate, num));
+        auto num = (int32_t) mrand48();
+//        cout << num << "\t";
+        data[i] = num;
+//        arr->Set(i, Integer::New(isolate, num));
     }
-
-    args.GetReturnValue().Set(arr);
+    cout << endl;
+    args.GetReturnValue().Set(localBuf);
 }
 
 
-void Method(const FunctionCallbackInfo<Value> &args)
+void Sort(const FunctionCallbackInfo<Value> &args)
 {
-
     Isolate *isolate = args.GetIsolate();
 
-    /*if (args.Length() < 2)
+    if (args.Length() < 2)
     {
         // Throw an Error that is passed back to JavaScript
         isolate->ThrowException(Exception::TypeError(
@@ -65,26 +85,41 @@ void Method(const FunctionCallbackInfo<Value> &args)
         return;
     }
 
-    if (args[0]->IsArray())
+    if (!args[1]->IsInt32())
     {
-        auto arr = Local<Array>::Cast(args[0]);
-        args.GetReturnValue().Set(arr->Get(0)->ToInteger());
+        isolate->ThrowException(Exception::TypeError(
+                String::NewFromUtf8(isolate, "Wrong arguments")));
         return;
-    }*/
+    }
 
-    auto arg = args[0];
-    auto buf = (int32_t *) Buffer::Data(args[0]);
-    auto len = Buffer::Length(args[0]) / sizeof(int32_t);
-//    cout << buf[0] << endl;
-//    cout << len << endl;
-    merge_sort(buf, len);
-    args.GetReturnValue().Set(String::NewFromUtf8(isolate, "world"));
+    auto arg0 = args[0];
+    auto arg1 = (int) args[1]->IntegerValue();
+
+    auto buf = (int32_t *) Buffer::Data(arg0);
+    auto len = Buffer::Length(arg0) / sizeof(int32_t);
+
+    auto funcNum = max(0, min(6, arg1));
+
+    cout << arg1 << "\t" << len << "\t";
+
+    auto clock1 = clock();
+    sort_fns[funcNum](buf, len);
+    auto clock2 = clock();
+
+    args.GetReturnValue().Set(Integer::New(isolate, clock2 - clock1));
+}
+
+void GetClocksPerSec(const FunctionCallbackInfo<Value> &args)
+{
+    Isolate *isolate = args.GetIsolate();
+    args.GetReturnValue().Set(Integer::New(isolate, CLOCKS_PER_SEC));
 }
 
 void init(Local<Object> exports)
 {
-    NODE_SET_METHOD(exports, "sort", Method);
     NODE_SET_METHOD(exports, "generate", Generate);
+    NODE_SET_METHOD(exports, "sort", Sort);
+    NODE_SET_METHOD(exports, "getClocksPerSec", GetClocksPerSec);
 }
 
 NODE_MODULE(sort, init);

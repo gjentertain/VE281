@@ -23,7 +23,7 @@ void (*const sort_fns[6])(int *, const int) = {
 
 int main(int argc, char *argv[])
 {
-    const int SIZE = (argc > 1) ? atoi(argv[1]) : 10;
+    const int SIZE = (argc > 1) ? atoi(argv[1]) : 10000;
     cout << SIZE << endl;
     srand48(time(0));
 
