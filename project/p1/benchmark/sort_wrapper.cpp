@@ -1,30 +1,10 @@
 #include <node.h>
 #include <node_buffer.h>
-#include <cstdlib>
-#include <string>
-#include <iostream>
-#include <algorithm>
-
-#include "../../answer/sort_wrapper.h"
+#include "sort_wrapper.h"
 
 using namespace v8;
 using namespace std;
 using namespace node;
-
-void cpp_sort(int arr[], const int n)
-{
-    sort(arr, arr + n);
-}
-
-void (*const sort_fns[])(int *, const int) = {
-        bubble_sort,
-        insertion_sort,
-        selection_sort,
-        merge_sort,
-        quick_sort_extra,
-        quick_sort_in_place,
-        cpp_sort,
-};
 
 void Generate(const FunctionCallbackInfo<Value> &args)
 {
@@ -58,17 +38,11 @@ void Generate(const FunctionCallbackInfo<Value> &args)
     auto localBuf = buf.ToLocalChecked();
     auto data = (int32_t *) Buffer::Data(localBuf);
 
-//    auto buf = ArrayBuffer::New(isolate, arg1 * 4);
-//    auto arr = Int32Array::New(buf, 0, arg1);
 
     for (uint32_t i = 0; i < arg1; i++)
     {
-        auto num = (int32_t) mrand48();
-//        cout << num << "\t";
-        data[i] = num;
-//        arr->Set(i, Integer::New(isolate, num));
+        data[i] = (int32_t) mrand48();
     }
-    cout << endl;
     args.GetReturnValue().Set(localBuf);
 }
 
@@ -93,20 +67,33 @@ void Sort(const FunctionCallbackInfo<Value> &args)
     }
 
     auto arg0 = args[0];
-    auto arg1 = (int) args[1]->IntegerValue();
+    auto funcNum = (int) args[1]->IntegerValue(); // function
+    auto size = (size_type) args[2]->IntegerValue(); // size
+    auto times = (size_type) args[3]->IntegerValue(); // times
 
     auto buf = (int32_t *) Buffer::Data(arg0);
     auto len = Buffer::Length(arg0) / sizeof(int32_t);
 
-    auto funcNum = max(0, min(6, arg1));
+    if (size * times > len)
+    {
+        isolate->ThrowException(Exception::TypeError(
+                String::NewFromUtf8(isolate, "Buffer too small")));
+        return;
+    }
 
-    cout << arg1 << "\t" << len << "\t";
+    funcNum = max(0, min(6, funcNum));
+
+
+//    cout << arg1 << "\t" << len << "\t";
 
     auto clock1 = clock();
-    sort_fns[funcNum](buf, len);
+    for (size_t i = 0; i < times; i++, buf += size)
+    {
+        sort_fns[funcNum](buf, size);
+    }
     auto clock2 = clock();
 
-    args.GetReturnValue().Set(Integer::New(isolate, clock2 - clock1));
+    args.GetReturnValue().Set(Integer::New(isolate, (int32_t) (clock2 - clock1)));
 }
 
 void GetClocksPerSec(const FunctionCallbackInfo<Value> &args)

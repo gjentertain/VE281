@@ -2,7 +2,6 @@
   "name": "VE281",
   "version": "0.0.1",
   "dependencies": {
-    "neo-async": "^2.4.0",
-    "pify": "^3.0.0"
+    "gauge": "^2.7.4"
   }
 }

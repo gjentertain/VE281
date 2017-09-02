@@ -4,13 +4,13 @@
 
 #include <cstdlib>
 #include <iostream>
-#include "sort_wrapper.h"
+#include "sort.h"
 
 using namespace std;
 
 int main()
 {
-    void (*const sort_fns[6])(int *, const int) = {
+    void (*const sort_fns[6])(data_type *, const size_type) = {
             bubble_sort,
             insertion_sort,
             selection_sort,
@@ -18,18 +18,19 @@ int main()
             quick_sort_extra,
             quick_sort_in_place
     };
-    int m, n;
+    int m;
+    size_type n;
     cin >> m;
     if (m >= 0 && m <= 5)
     {
         cin >> n;
-        auto arr = new int[n];
-        for (int i = 0; i < n; i++)
+        auto arr = new data_type[n];
+        for (size_type i = 0; i < n; i++)
         {
             cin >> arr[i];
         }
         sort_fns[m](arr, n);
-        for (int i = 0; i < n; i++)
+        for (size_type i = 0; i < n; i++)
         {
             cout << arr[i] << endl;
         }
