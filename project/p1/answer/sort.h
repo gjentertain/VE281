@@ -8,7 +8,7 @@
 #include <cstdlib>
 
 typedef int32_t data_type;
-typedef uint32_t size_type;
+typedef u_int32_t size_type;
 
 void bubble_sort(data_type arr[], const size_type n);
 

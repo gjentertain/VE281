@@ -35,7 +35,8 @@ void insertion_sort(data_type arr[], const size_type n)
             {
                 arr[j] = arr[j - 1];
                 j--;
-            } else break;
+            }
+            else break;
         }
         arr[j] = temp;
     }
@@ -94,7 +95,7 @@ size_type partition_in_place(data_type arr[], const size_type n)
     size_type i = 1, j = n - 1;
     while (true)
     {
-        while (i < n && arr[i] < arr[0])i++;
+        while (i < n - 1 && arr[i] < arr[0])i++;
         while (j > 0 && arr[j] >= arr[0])j--;
         if (i < j)swap(arr[i], arr[j]);
         else break;
