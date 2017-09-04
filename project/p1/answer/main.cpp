@@ -10,7 +10,8 @@ using namespace std;
 
 int main()
 {
-    void (*const sort_fns[6])(data_type *, const size_type) = {
+    const int sort_fns_num = 6;
+    void (*const sort_fns[sort_fns_num])(data_type *, const size_type) = {
             bubble_sort,
             insertion_sort,
             selection_sort,
@@ -21,7 +22,7 @@ int main()
     int m;
     size_type n;
     cin >> m;
-    if (m >= 0 && m <= 5)
+    if (m >= 0 && m < sort_fns_num)
     {
         cin >> n;
         auto arr = new data_type[n];

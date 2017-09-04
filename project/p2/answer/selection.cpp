@@ -47,3 +47,9 @@ data_type random_selection(const data_type arr[], const size_type n, const size_
     return result;
 }
 
+data_type deterministic_selection(const data_type arr[], const size_type n, const size_type order)
+{
+    
+}
+
+

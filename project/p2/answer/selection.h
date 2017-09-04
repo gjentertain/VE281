@@ -12,5 +12,6 @@ typedef u_int32_t size_type;
 
 data_type random_selection(const data_type arr[], const size_type n, const size_type order);
 
+data_type deterministic_selection(const data_type arr[], const size_type n, const size_type order);
 
 #endif //P2_SELECTION_H
