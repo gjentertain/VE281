@@ -32,8 +32,9 @@ int main()
     }
     return 0;
 
-/*    srand48(time(0));
-    const int SIZE = 100;
+/*
+    srand48(time(0));
+    const int SIZE = 1000;
     int arr[SIZE] = {};
     int sorted[SIZE] = {};
     for (int i = 0; i < SIZE; i++)
@@ -45,12 +46,13 @@ int main()
 
     for (int i = 0; i < SIZE; i++)
     {
-        auto item = random_selection(arr, SIZE, i);
+        auto item = deterministic_selection(arr, SIZE, i);
         if (item != sorted[i])
         {
             cout << i << endl;
         }
-    }*/
+    }
+*/
 
 }
 
