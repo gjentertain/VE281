@@ -1,0 +1,85 @@
+\documentclass{article}
+\usepackage{enumerate}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{geometry}
+\usepackage{caption}
+\usepackage{indentfirst}
+
+\usepackage{algorithm}  
+\usepackage{algorithmicx}  
+\usepackage{algpseudocode}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}  
+\renewcommand{\algorithmicensure}{\textbf{Output:}}  
+
+\geometry{left=3.0cm,right=3.0cm,top=3.0cm,bottom=4.0cm}
+\renewcommand{\thesection}{Ex. \arabic{section}}
+\title{VE281 Writing Assignment One}
+\author{Liu Yihao 515370910207}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{}
+The strategy is:
+\begin{algorithm}[H]
+    \begin{algorithmic}
+        \Require maximum integer $N$
+        \Ensure correct integer $x$
+        \State $begin\gets1$, $end\gets N$
+        \While {True}
+        		\State $x\gets\lfloor(begin+end)/2\rfloor$
+        		\State $result\gets$ make a guess with $x$
+        		\If {$result=$ ``equal to''}{ \textbf{break}}
+        		\ElsIf {$result=$ ``less then''}{ $end\gets x-1$}
+        		\Else { $begin\gets x+1$}
+        		\EndIf
+        \EndWhile
+    \end{algorithmic}  
+\end{algorithm}
+
+In the worst case, I never directly guess the correct number in the process of the strategy. After a guess of $N$, the next range of numbers become $(N-1)/2$. When $N=2^m-1$, the last guess will contain $2^2-1=3$ numbers, and I'll get the correct one after the guesses. So the number of guess in the worst case is $m-1$. \\
+
+In the average case, if there are $M$ numbers left, I've got the probability of $1/M$ to guess the number directly. Let the probability of guessing $n$ times be $P_n$,
+$$P_1=\frac{1}{2^m-1}$$ 
+$$P_n=\frac{1-P_{n-1}}{2^{m-n+1}-1}=\frac{2^{n-1}}{2^{m}-1}$$ 
+
+Then we can get the equation
+$$T_m =\sum_{n=1}^{m-1}nP_n=\frac{1\cdot2^0+2\cdot2^1+\cdots+n\cdot2^{m-2}}{2^{m}-1}=\frac{(m-2)2^{m-1}+1}{2^m-1}$$
+
+\section{}
+In the best situation, if $n=2^m$, only $cm$ steps ($c$ is a constant) is necessary. So $f(n)=\log n$.
+
+\section{}
+$$\lim_{n\to\infty}\frac{n^{100}}{1.001^n}=\lim_{n\to\infty}\frac{100n^{99}}{1.001^n\ln1.001}=\cdots=\lim_{n\to\infty}\frac{100!}{1.001^n\ln^{100}1.001}=0$$
+
+So $n^{100}=O(1.001^n)$ is false.
+
+\section{}
+Since $f_1(n)=\Theta(g_1(n))$, $f_2(n)=\Theta(g_2(n))$, we know
+$$c_1g_1(n)\leqslant f_1(n)\leqslant c_2g_1(n),n\geqslant n_1$$
+$$c_3g_2(n)\leqslant f_2(n)\leqslant c_4g_2(n),n\geqslant n_2$$
+
+Then
+$$c_1g_1(n)+c_3g_2(n)\leqslant f_1(n)+f_2(n)\leqslant c_2g_1(n)+c_4g_2(n),n\geqslant \max\{n_1,n_2\}$$
+
+Now we should find $h(n)$ so that
+$$\lim_{n\to\infty}\frac{c_1g_1(n)+c_3g_2(n)}{h(n)}=C_1$$
+$$\lim_{n\to\infty}\frac{c_2g_2(n)+c_4g_2(n)}{h(n)}=C_2$$
+
+So $$h(n)=\max\{g_1(n),g_2(n)\}$$
+
+\section{}
+The outer loop will be called $\lfloor1+\log_an\rfloor$ times, in $k^{th}$ loop, $i=a^k$, where $k\in\Big[0,\lfloor\log_an\rfloor\Big]\cap Z$.
+
+The inner loop will be called $ib$ times in each loop.
+
+$$T=b\sum_{k=0}^{\lfloor\log_an\rfloor}a^k=\frac{b\left(1-a^{\lfloor\log_an\rfloor}\right)}{1-a}$$
+
+\section{}
+
+
+\end{document}
