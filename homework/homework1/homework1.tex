@@ -80,6 +80,22 @@ The inner loop will be called $ib$ times in each loop.
 $$T=b\sum_{k=0}^{\lfloor\log_an\rfloor}a^k=\frac{b\left(1-a^{\lfloor\log_an\rfloor}\right)}{1-a}$$
 
 \section{}
+\begin{enumerate}[(a)]
+\item
+$$T_1(n)=\lceil n/2\rceil$$
+$$T_1(n)=\lceil n/20\rceil$$
+$$T_3(n)=\lceil 1+\log_2n\rceil$$
+\item
+$$C_1(n)=4n+2\lceil n/2\rceil$$
+$$C_2(n)=10+4n+\lceil n/20\rceil$$
+$$C_3(n)=40+4n+2\lceil 1+\log_2n\rceil$$
+\item
+Method 1 is the cheapest, it costs \$40.
+\item
+Method 2 is the cheapest, it costs \$529.
+\item
+Method 3 is the cheapest, it costs \$8256.
+\end{enumerate}
 
 
 \end{document}
