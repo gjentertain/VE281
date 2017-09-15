@@ -5,4 +5,5 @@ SET(CMAKE_CXX_STANDARD 11)
 
 add_subdirectory(project/p1)
 add_subdirectory(project/p2)
+add_subdirectory(project/p3)
 
