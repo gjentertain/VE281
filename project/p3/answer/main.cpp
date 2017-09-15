@@ -33,22 +33,40 @@ void print_path(const Point &p) {
 }
 
 int main(int argc, char *argv[]) {
-
-    const char *short_options = "iv";
-    const option long_options[] = {
-            {"implementation", no_argument, NULL, 'i'},
-            {"verbose",        no_argument, NULL, 'v'},
-            {0,                0, 0,              0}
-    };
-    cout << argc << endl;
-    while (true) {
-        char c = getopt_long(argc, argv, short_options, long_options, NULL);
+    bool verbose = false;
+    string impl;
+    while (true)
+    {
+        const option long_options[] = {
+                {"verbose",        no_argument,       NULL, 'v'},
+                {"implementation", required_argument, NULL, 'i'},
+                {0, 0, 0, 0}
+        };
+        int c = getopt_long(argc, argv, "vi:", long_options, NULL);
         if (c == -1)break;
-        cout << c << "\t" << optarg << endl;
+        if (c == 'v')
+        {
+            verbose=true;
+        }
+        else if (c == 'i')
+        {
+            impl=optarg;
+        }
+    }
+    if (impl=="BINARY")
+    {
+        cout << verbose << endl << impl << endl;
+    }
+    else if (impl=="UNSORTED")
+    {
+        cout << verbose << endl << impl << endl;
+    }
+    else
+    {
+        return 0;
     }
 
     size_t m, n, x1, x2, y1, y2;
-    bool verbose = true;
     cin >> n >> m >> y1 >> x1 >> y2 >> x2;
 
     Point **grid = new Point *[m];
