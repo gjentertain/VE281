@@ -6,12 +6,14 @@
 #include <iostream>
 #include "Market.h"
 
-int main() {
+int main()
+{
     Market market;
     std::string str;
-    while (!std::cin.eof()) {
+    while (!std::cin.eof())
+    {
         std::getline(std::cin, str);
-        market.readLine(str);
+        if (!str.empty()) market.readLine(str);
     }
     return 0;
 }
