@@ -20,9 +20,12 @@ end
 hold off;
 
 set(gca,'XScale','log');
+set(gca,'YScale','log');
 axis([10 1e7 0 1]);
 legend('bubble','insertion','selection','merge','quick extra', ...
     'quick in place','cpp standard','Location','northwest');
+set(gca,'Fontsize',20);
+saveas(gcf,'fig1.png');
 
 figure(2);
 clf;
@@ -38,4 +41,8 @@ axis([10 400 0 2e-5]);
 set(gca,'XScale','log');
 legend('bubble','insertion','selection','merge','quick extra', ...
     'quick in place','cpp standard','Location','northwest');
+set(gca,'Fontsize',20);
+saveas(gcf,'fig2.png');
+
+
 

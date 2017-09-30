@@ -18,7 +18,6 @@
 \setminted{linenos,breaklines,tabsize=4,xleftmargin=1.5em}
 
 \geometry{left=3.0cm,right=3.0cm,top=3.0cm,bottom=4.0cm}
-%\renewcommand{\thesection}{Ex. \arabic{section}}
 
 \title{VE281 Project One Report}
 \author{Liu Yihao 515370910207}
@@ -35,34 +34,56 @@ In order to study the performances of these six sorting algorithms, I generated 
 
 The limitation of runtime was set to 1s for all algorithms, so some meaningless and slow running were dropped (eg. large array size for bubble sort). Then I used MATLAB to plot two graphs, one of small test cases, and another of all cases.
 
-\begin{figure}
-%\includegraphics[width=0.8\linewidth]{../benchmark/}
+\subsection{General analysis}
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.8\linewidth]{../benchmark/fig1.png}
+\caption{All cases}
+\label{fig-1}
 \end{figure}
 
+From Figure \ref{fig-1}, we can find that bubble sort, insertion sort and selection sort have the similar running speed, while merge sort and quick sort are also similar on running speed, but faster. The result satisfy the theory that bubble sort, insertion sort and selection sort have time complexity of $O(n^2)$, while merge sort and quick sort have time complexity of $O(n\log n)$.
+
+\subsection{Small data analysis}
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.8\linewidth]{../benchmark/fig2.png}
+\caption{Small cases}
+\label{fig-2}
+\end{figure}
+
+From Figure \ref{fig-2}, we can find that when the data size is small (from 10 to 100), the running speed of merge sort and quick sort is slower than insertion sort. It is because when $n$ is small, the constant $c$ acts a more important role. However, the cpp standard sort have a similar performance as insertion sort in this period, so it probably apply insertion sort to the data when $n$ is small enough. That's why the cpp standard sort is always quicker than my algorithms in Figure \ref{fig-1}.
+
+\newpage
 
 \section{Appendix}
 
-The project 1 program files
-\begin{enumerate}[(a)]
-\item
-sort.h
+\subsection{The project files}
+
+\subsubsection{sort.h}
 \inputminted{c++}{../answer/sort.h}
-\item
-sort.cpp
+\subsubsection{sort.cpp}
 \inputminted{c++}{../answer/sort.cpp}
-\item
-main.cpp
+\subsubsection{main.cpp}
 \inputminted{c++}{../answer/main.cpp}
-\end{enumerate}
+\subsubsection{Makefile}
+\inputminted{makefile}{../answer/Makefile}
 
-The benchmark program
+
+\subsection{The benchmark program}
+\subsubsection{README.md}
+\inputminted{md}{../benchmark/README.md}
+\subsubsection{sort\_wrapper.h}
+\inputminted{c++}{../benchmark/sort_wrapper.h}
+\subsubsection{sort\_wrapper.cpp}
+\inputminted{c++}{../benchmark/sort_wrapper.cpp}
+\subsubsection{binding.gyp}
+\inputminted{json}{../benchmark/binding.gyp}
+\subsubsection{benchmark.js}
 \inputminted{javascript}{../benchmark/benchmark.js}
-
-
-
-
-
-
-
+\subsubsection{benchmark.m}
+\inputminted{matlab}{../benchmark/benchmark.m}
 
 \end{document}
