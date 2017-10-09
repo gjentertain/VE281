@@ -47,7 +47,7 @@ void Generate(const FunctionCallbackInfo<Value> &args)
 }
 
 
-void Selection(const FunctionCallbackInfo<Value> &args)
+void Sort(const FunctionCallbackInfo<Value> &args)
 {
     Isolate *isolate = args.GetIsolate();
 
@@ -105,7 +105,7 @@ void GetClocksPerSec(const FunctionCallbackInfo<Value> &args)
 void init(Local<Object> exports)
 {
     NODE_SET_METHOD(exports, "generate", Generate);
-    NODE_SET_METHOD(exports, "selection", Selection);
+    NODE_SET_METHOD(exports, "sort", Sort);
     NODE_SET_METHOD(exports, "getClocksPerSec", GetClocksPerSec);
 }
 

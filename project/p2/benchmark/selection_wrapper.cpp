@@ -47,7 +47,7 @@ void Generate(const FunctionCallbackInfo<Value> &args)
 }
 
 
-void Sort(const FunctionCallbackInfo<Value> &args)
+void Selection(const FunctionCallbackInfo<Value> &args)
 {
     Isolate *isolate = args.GetIsolate();
 
@@ -69,7 +69,8 @@ void Sort(const FunctionCallbackInfo<Value> &args)
     auto arg0 = args[0];
     auto funcNum = (int) args[1]->IntegerValue(); // function
     auto size = (size_type) args[2]->IntegerValue(); // size
-    auto times = (size_type) args[3]->IntegerValue(); // times
+    auto order = (size_type) args[3]->IntegerValue(); // order
+    auto times = (size_type) args[4]->IntegerValue(); // times
 
     auto buf = (int32_t *) Buffer::Data(arg0);
     auto len = Buffer::Length(arg0) / sizeof(int32_t);
@@ -81,7 +82,7 @@ void Sort(const FunctionCallbackInfo<Value> &args)
         return;
     }
 
-    funcNum = max(0, min(6, funcNum));
+    funcNum = max(0, min(2, funcNum));
 
 
 //    cout << arg1 << "\t" << len << "\t";
@@ -89,10 +90,9 @@ void Sort(const FunctionCallbackInfo<Value> &args)
     auto clock1 = clock();
     for (size_t i = 0; i < times; i++, buf += size)
     {
-        sort_fns[funcNum](buf, size);
+        selection_fns[funcNum](buf, size, order);
     }
     auto clock2 = clock();
-
     args.GetReturnValue().Set(Integer::New(isolate, (int32_t) (clock2 - clock1)));
 }
 
@@ -105,10 +105,10 @@ void GetClocksPerSec(const FunctionCallbackInfo<Value> &args)
 void init(Local<Object> exports)
 {
     NODE_SET_METHOD(exports, "generate", Generate);
-    NODE_SET_METHOD(exports, "sort", Sort);
+    NODE_SET_METHOD(exports, "selection", Selection);
     NODE_SET_METHOD(exports, "getClocksPerSec", GetClocksPerSec);
 }
 
-NODE_MODULE(sort, init);
+NODE_MODULE(selection, init);
 
 

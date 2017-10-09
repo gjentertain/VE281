@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const selection = require('./build/Release/sort');
+const selection = require('./build/Release/selection');
 const gauge = require('gauge');
 const bar = new gauge(process.stderr, {
     updateInterval: 1,
@@ -40,7 +40,8 @@ for (let exp = 0; exp < EXP_MAX; exp++) {
     base *= 10;
     let size = base;
     let partition = PARTITION_ARR[exp];
-    for (let mul = 1; mul < partition - 1; mul++) {
+    for (let mul = 1; mul < partition - 1 && size < base * 10; mul++) {
+        console.log(size);
         for (let i = 0; i < ALGORITHM_MAX; i++) {
             let weight = WEIGHT_ARR[exp];
             weight_all += weight;
@@ -69,7 +70,7 @@ tasks.forEach((value) => {
         }
 
         const newBuf = Buffer.from(buf.slice(0, value.size * value.times * 4));
-        const totalTime = selection.selection(newBuf, value.order, value.size, value.times);
+        const totalTime = selection.selection(newBuf, value.order, value.size, 0, value.times);
         const averageTime = totalTime / value.times;
         total_time[value.exp] += totalTime;
 
@@ -79,14 +80,14 @@ tasks.forEach((value) => {
             //console.log(value.order);
         }
 
-        if (value.order === ALGORITHM_MAX - 1) {
+        /*if (value.order === ALGORITHM_MAX - 1) {
             for (let i = 0; i < value.order; i++) {
                 const temp = selection_result[i];
                 if (temp && Buffer.compare(temp, selection_result[value.order]) !== 0) {
-                    console.error(value.size, ALGORITHM_NAME[i]);
+                    //console.error(value.size, ALGORITHM_NAME[i]);
                 }
             }
-        }
+        }*/
 
         return [value, averageTime];
     });

@@ -13,7 +13,7 @@ data_type cpp_selection(data_type arr[], const size_type n, const size_type orde
     return arr[order];
 }
 
-data_type (*const sort_fns[])(data_type *, const size_type, const size_type) = {
+data_type (*const selection_fns[])(data_type *, const size_type, const size_type) = {
         random_selection,
         deterministic_selection,
         cpp_selection,
