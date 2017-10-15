@@ -1,0 +1,62 @@
+\documentclass{article}
+\usepackage{enumerate}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{geometry}
+\usepackage{caption}
+\usepackage{indentfirst}
+\usepackage{array}
+%\renewcommand\arraystretch{2}
+
+\usepackage{algorithm}  
+\usepackage{algorithmicx}  
+\usepackage{algpseudocode}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}  
+\renewcommand{\algorithmicensure}{\textbf{Output:}}  
+
+\geometry{left=3.0cm,right=3.0cm,top=3.0cm,bottom=4.0cm}
+\renewcommand{\thesection}{Ex. \arabic{section}}
+\title{VE281 Writing Assignment One}
+\author{Liu Yihao 515370910207}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{}
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+step & pivot & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & comment \\\hline
+1 & 5 & 5 & 7 & 4 & 1 & 8 & 9 & 2 & 6 & 3 & 10 & swap arr[0] and pivot \\\hline
+1 & 5 & 5 & 3 & 4 & 1 & 2 & 9 & 8 & 6 & 7 & 10 & partition \\\hline
+1 & 5 & 2 & 3 & 4 & 1 & 5 & 9 & 8 & 6 & 7 & 10 & swap arr[0] and partition pos \\\hline
+2 & 2 & 2 & 3 & 4 & 1 &&&&&&& swap arr[0] and pivot \\\hline
+2 & 2 & 2 & 1 & 4 & 3 &&&&&&& partition \\\hline
+2 & 2 & 1 & 2 & 4 & 3 &&&&&&& swap arr[0] and partition pos \\\hline
+3 &   &   &   & 3 & 4 &&&&&&& insertion sort arr[2],arr[3] \\\hline
+4 & 8 &&&&&& 8 & 9 & 6 & 7 & 10 & swap arr[5] and pivot\\\hline
+4 & 8 &&&&&& 8 & 7 & 6 & 9 & 10 & partition \\\hline
+4 & 8 &&&&&& 6 & 7 & 8 & 9 & 10 & swap arr[5] and partition pos \\\hline
+5 &   &&&&&& 6 & 7 &   &   &    & insertion sort arr[5],arr[6] \\\hline
+6 &   &&&&&&   &   &   & 9 & 10 & insertion sort arr[8],arr[9] \\\hline
+\end{tabular}
+\end{center}
+
+\section{}
+\begin{center}
+\begin{tabular}{|c|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|}
+\hline
+step & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\\hline
+1 & & & 032 632 & 943 & & & 446 526 & & 538 738 & 189 479 379 \\\hline 
+2 & & & 526 & 032 632 538 738 & 943 446 & & & 479 379 & 189 & \\\hline
+3 & 032 & 189 & & 379 & 446 479 & 526 538 & 632 & 738 & & 943\\\hline
+\end{tabular}
+\end{center}
+
+\section{}
+
+
+\end{document}
