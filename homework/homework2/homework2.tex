@@ -18,7 +18,7 @@
 
 \geometry{left=3.0cm,right=3.0cm,top=3.0cm,bottom=4.0cm}
 \renewcommand{\thesection}{Ex. \arabic{section}}
-\title{VE281 Writing Assignment One}
+\title{VE281 Writing Assignment Two}
 \author{Liu Yihao 515370910207}
 \date{}
 
@@ -57,6 +57,93 @@ step & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\\hline
 \end{center}
 
 \section{}
+Similar to the proof in the slides, when $k=n/7$, approx at least $5/7/2=5/14$ is smaller than $x_{k/2}$, and at least $5/7/2=5/14$ is larger than $x_{k/2}$, so we can find the recurrence relationship
+$$T(n)=cn+T\left(\frac{n}{7}\right)+T\left(\frac{9n}{14}\right)$$
 
+Suppose there exists a positive constant $c$ such that 
+$$T(1)\leqslant c$$
+$$T(n)\leqslant cn+T\left(\frac{n}{7}\right)+T\left(\frac{9n}{14}\right)$$
+
+Then $$T(n)\leqslant 14cn$$
+
+For the base case, obviously $T(1)\leqslant cn\leqslant 14cn$.
+
+For the inductive step,
+$$T(n)\leqslant cn+T\left(\frac{n}{7}\right)+T\left(\frac{9n}{14}\right)\leqslant cn+2cn+9cn \leqslant 14cn$$
+
+So the runtime of this new algorithm is still $O(n)$.
+
+\section{}
+\begin{enumerate}[(a)]
+\item \ 
+\begin{center}
+\begin{tabular}{|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|}
+\hline
+0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\\hline
+& 4371 & & 6173 1323 & 4344 & & & & & 1989 9679 4199 \\\hline
+\end{tabular}
+\end{center}
+\item \ 
+\begin{center}
+\begin{tabular}{|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|}
+\hline
+0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\\hline
+9679 & 4371 & 1989 & 1323 & 6173 & 4344 & & & & 4199 \\\hline
+\end{tabular}
+\end{center}
+\item \ 
+\begin{center}
+\begin{tabular}{|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|}
+\hline
+0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\\hline
+9679 & 4371 & & 1323 & 6173 & 4344 &&& 1989 & 4199 \\\hline
+\end{tabular}
+\end{center}
+\item \ 
+\begin{center}
+\begin{tabular}{|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|}
+\hline
+0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\\hline
+ & 4371 & & 1323 & 4344 & 4199 & & & & 6173 \\\hline
+\end{tabular}
+\end{center}
+Then we can find that $(7-9679)\equiv 5\mod 7$, however, slot 9 and 4 on the hashtable are not empty, so this element can't be inserted.
+\end{enumerate}
+
+\section{}
+\begin{enumerate}[(a)]
+\item \ 
+\begin{center}
+\begin{tabular}{|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|}
+\hline
+0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\\hline
+4199 & 4371 &&&&&&& 9679 & \\\hline
+10 & 11 & 12 & 13 & 14 & 15 & 16 & 17 & 18 & \\\hline
+& & 4344 1323 & 1989 & & & & 6173 & & \\\hline
+\end{tabular}
+\end{center}
+\item \ 
+\begin{center}
+\begin{tabular}{|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|}
+\hline
+0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\\hline
+4199 & 4371 &&&&&&& 9679 & \\\hline
+10 & 11 & 12 & 13 & 14 & 15 & 16 & 17 & 18 & \\\hline
+& & 1323 & 1989 & 4344 & & & 6173 & & \\\hline
+\end{tabular}
+\end{center}
+\item \ 
+\begin{center}
+\begin{tabular}{|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|}
+\hline
+0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\\hline
+4199 & 4371 &&&&&&& 9679 & \\\hline
+10 & 11 & 12 & 13 & 14 & 15 & 16 & 17 & 18 & \\\hline
+& & 1323 & 4344 & 1989 & & & 6173 & & \\\hline
+\end{tabular}
+\end{center}
+\item
+Since the hashtable is not complete, it can't be rehashed.
+\end{enumerate}
 
 \end{document}
