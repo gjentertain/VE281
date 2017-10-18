@@ -104,10 +104,10 @@ So the runtime of this new algorithm is still $O(n)$.
 \begin{tabular}{|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|}
 \hline
 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\\hline
- & 4371 & & 1323 & 4344 & 4199 & & & & 6173 \\\hline
+ & 4371 & & 1323 & 6173 & 9679 & & 4344 & & 4199 \\\hline
 \end{tabular}
 \end{center}
-Then we can find that $(7-9679)\equiv 5\mod 7$, however, slot 9 and 4 on the hashtable are not empty, so this element can't be inserted.
+Then we can find that $(7-1989)\equiv 6\mod 7$, however, the odd slots are not empty, so this element can't be inserted.
 \end{enumerate}
 
 \section{}
@@ -147,9 +147,9 @@ Then we can find that $(7-9679)\equiv 5\mod 7$, however, slot 9 and 4 on the has
 \begin{tabular}{|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|m{2em}<{\centering}|}
 \hline
 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\\hline
-4199 & 4371 && 4344 &&&&& 9679 & \\\hline
+4199 & 4371 && &&&&& 9679 & \\\hline
 10 & 11 & 12 & 13 & 14 & 15 & 16 & 17 & 18 & \\\hline
-& & 1323 & 1989 & & & & 6173 & & \\\hline
+& & 1323 & 1989 & & 4344 & & 6173 & & \\\hline
 \end{tabular}
 \end{center}
 \end{enumerate}
