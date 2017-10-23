@@ -1,6 +1,10 @@
 #include <iostream>
 #include "priority_queue.h"
 #include "binary_heap.h"
+#include "fib_heap.h"
+#include <list>
+#include <algorithm>
+
 using namespace std;
 
 // The following example defines a functor. It is defined using struct keyword.
@@ -21,34 +25,44 @@ using namespace std;
 // than the second argument. The functor type will be passed as the COMP
 // template parameter to the priority queue template. See priority_queue.h,
 // binary_heap.h, and unsorted_array.h.
-struct compare_t
-{
-    bool operator()(int a, int b) const
-    {
+struct compare_t {
+    bool operator()(int a, int b) const {
         return a > b;
     }
 };
 
-int main(int argc, char* argv[])
-{
+int main(int argc, char *argv[]) {
+    list<int> list1 = {3, 6, 2, 4, 9, 3, 4, 5};
+    list<int> list2 = {10, 11, 22};
+    auto min = min_element(list1.begin(), list1.end());
+    min = list1.erase(min);
+    list1.splice(min, list2, list2.begin(), ++list2.begin());
+
+//    list1.insert(list1.begin(), 8);
+//    cout << list1.front() << endl;
+    bool flag = true;
+    for (auto it = min; it != min || flag; it++, flag = false) {
+        cout << *it << " ";
+    }
+    cout << endl;
+
     int a[] = {3, 6, 7, 4, 2};
     int i;
-    int size = sizeof(a)/sizeof(int);
+    int size = sizeof(a) / sizeof(int);
     cout << "Input: ";
-    for(i = 0; i < size; i++)
+    for (i = 0; i < size; i++)
         cout << a[i] << " " << flush;
     cout << endl;
 
     // We define a priority queue on int with the comparison functor as
     // compare_t defined above. For this queue, the larger the int value is,
     // the less prior it is.
-    priority_queue<int, compare_t> *pql = new binary_heap<int, compare_t>;
-    for(i = 0; i < size; i++)
+    priority_queue<int, compare_t> *pql = new fib_heap<int, compare_t>;
+    for (i = 0; i < size; i++)
         pql->enqueue(a[i]);
 
     cout << "Sort in descending order: " << flush;
-    for(i = 0; i < size; i++)
-    {
+    for (i = 0; i < size; i++) {
         int val = pql->dequeue_min();
         cout << val << " ";
     }
@@ -64,13 +78,12 @@ int main(int argc, char* argv[])
     // For the following example, we omit the second template parameter, so the
     // priority queue uses the default less than operator defined on int. In
     // this queue, the smaller the int value is, the less prior it is.
-    priority_queue<int> *pqs = new binary_heap<int>;
-    for(i = 0; i < size; i++)
+    priority_queue<int> *pqs = new fib_heap<int>;
+    for (i = 0; i < size; i++)
         pqs->enqueue(a[i]);
 
     cout << "Sort in ascending order: " << flush;
-    for(i = 0; i < size; i++)
-    {
+    for (i = 0; i < size; i++) {
         int val = pqs->dequeue_min();
         cout << val << " ";
     }
