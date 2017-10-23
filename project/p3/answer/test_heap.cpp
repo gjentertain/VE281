@@ -32,21 +32,11 @@ struct compare_t {
 };
 
 int main(int argc, char *argv[]) {
-    list<int> list1 = {3, 6, 2, 4, 9, 3, 4, 5};
-    list<int> list2 = {10, 11, 22};
-    auto min = min_element(list1.begin(), list1.end());
-    min = list1.erase(min);
-    list1.splice(min, list2, list2.begin(), ++list2.begin());
-
-//    list1.insert(list1.begin(), 8);
-//    cout << list1.front() << endl;
-    bool flag = true;
-    for (auto it = min; it != min || flag; it++, flag = false) {
-        cout << *it << " ";
+    const int SIZE = 1000;
+    int a[SIZE] = {};
+    for (int i = 0; i < SIZE; i++) {
+        a[i] = rand();
     }
-    cout << endl;
-
-    int a[] = {3, 6, 7, 4, 2};
     int i;
     int size = sizeof(a) / sizeof(int);
     cout << "Input: ";
@@ -64,7 +54,7 @@ int main(int argc, char *argv[]) {
     cout << "Sort in descending order: " << flush;
     for (i = 0; i < size; i++) {
         int val = pql->dequeue_min();
-        cout << val << " ";
+        cout << val << " " << flush;
     }
     cout << endl;
     delete pql;
@@ -85,7 +75,7 @@ int main(int argc, char *argv[]) {
     cout << "Sort in ascending order: " << flush;
     for (i = 0; i < size; i++) {
         int val = pqs->dequeue_min();
-        cout << val << " ";
+        cout << val << " " << flush;
     }
     cout << endl;
 

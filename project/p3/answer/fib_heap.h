@@ -5,7 +5,6 @@
 #include <cmath>
 #include <list>
 #include "priority_queue.h"
-#include <iostream>
 
 // OVERVIEW: A specialized version of the 'heap' ADT implemented as a
 //           Fibonacci heap.
@@ -66,15 +65,6 @@ private:
     typename std::list<node>::iterator min;
     unsigned num_elements = 0;
     const TYPE &default_element = TYPE();
-
-public:
-    static void print(node node1, int depth = 0) {
-        for (int i = 0; i < depth; i++)std::cout << "    ";
-        std::cout << node1.val << std::endl;
-        for (auto &item:node1.child) {
-            print(item, depth + 1);
-        }
-    }
 };
 
 // Add the definitions of the member functions here. Please refer to
@@ -88,7 +78,11 @@ fib_heap<TYPE, COMP>::fib_heap(COMP comp) {
 
 template<typename TYPE, typename COMP>
 void fib_heap<TYPE, COMP>::enqueue(const TYPE &val) {
-    if (compare(val, min->val)) {
+    if(root.empty()){
+        root.push_front(node(val));
+        min = root.begin();
+    }
+    else if (compare(val, min->val)) {
         min = root.insert(min, node(val));
     } else {
         root.insert(min, node(val));
@@ -100,51 +94,54 @@ template<typename TYPE, typename COMP>
 TYPE fib_heap<TYPE, COMP>::dequeue_min() {
     if (this->empty()) return default_element;
     num_elements--;
+
     root.splice(min, min->child);
     auto temp = min->val;
     min = root.erase(min);
-    auto min_value = min->val;
-    auto start = min;
-
-    std::cout << "\n\nmin: " << temp << std::endl;
-    for (auto &item:root) {
-        std::cout << item.val << " ";
+    if (min == root.end()) {
+        min = root.begin();
     }
-    std::cout << start->val;
 
-
+    auto it = min;
     auto size = (unsigned) (log(num_elements) / log(1.618)) + 1;
     bool isset[size] = {0};
     typename std::list<node>::iterator arr[size];
+    for (int i = 0; i < size; i++) {
+        arr[i] = root.end();
+    }
 
-    bool flag = true;
-    for (auto it = start; it != start || flag; it++, flag = false) {
-//        std::cout << root.size() << " ";
+    auto root_size = root.size();
+    for (auto i = 0; i < root_size; i++) {
+        if (it == root.end()) it = root.begin();
+        bool flag = true;
         auto now = it;
         unsigned depth = now->depth;
         while (isset[depth]) {
             if (compare(now->val, arr[depth]->val)) {
-                now->child.splice(now->child.begin(), root, arr[depth], ++arr[depth]);
+                now->child.push_front(*arr[depth]);
+                root.erase(arr[depth]);
             } else {
-                arr[depth]->child.splice(arr[depth]->child.begin(), root, now, ++now);
+                arr[depth]->child.push_front(*now);
+                if (now == it) {
+                    it = root.erase(now);
+                    flag = false;
+                } else {
+                    root.erase(now);
+                }
                 now = arr[depth];
             }
-            now->depth++;
             isset[depth] = false;
             depth++;
+            now->depth++;
         }
         isset[depth] = true;
+        if (now == root.end()) now = root.begin();
         arr[depth] = now;
-        if (compare(now->val, min_value)) {
-            min = now;
-            min_value = min->val;
-        }
-        std::cout << "\nbegin\n";
-        for (auto &item:root) {
-            print(item);
-        }
+        if (flag) ++it;
     }
-
+    min = std::min_element(root.begin(), root.end(), [this](const node &a, const node &b) {
+        return compare(a.val, b.val);
+    });
     return temp;
 }
 
