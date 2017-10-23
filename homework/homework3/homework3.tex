@@ -73,19 +73,29 @@ Then, when $n=k$, suppose the statement is true. When $n=k+1$, one more full nod
 \end{enumerate}
 
 \section{}
+We can add a bool attribute ``visited'' to the struct.
 \begin{algorithm}[H]
     \begin{algorithmic}
         \Require The root node $root$
+        \State $root.visited\gets false$
         \State push $root$ into $stack$
         \While {$stack$ is not empty}
             \State $node\gets$ pop a element from $stack$
-            \If {$node.right$ exists}
-            	\State push $node.right$ into $stack$
-            \EndIf
-            \If {$node.left$ exists}
-            	\State push $node.left$ into $stack$
-            \EndIf
+            \If {$node.visited$}
+                \If {$node.right$ exists}
+                    \State $node.right.visited\gets false$
+                    \State push $node.right$ into $stack$
+                \EndIf
+                \State $node.visited\gets true$
+                \State push $node$ into $stack$
+                \If {$node.left$ exists}
+                    \State $node.left.visited\gets false$
+                    \State push $node.left$ into $stack$
+                \EndIf
+            
+            \Else
             \State do something with $node$
+            \EndIf
         \EndWhile
     \end{algorithmic}  
 \end{algorithm}
