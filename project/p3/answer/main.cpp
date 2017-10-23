@@ -95,7 +95,7 @@ int main(int argc, char *argv[]) {
     size_t m, n, x1, x2, y1, y2;
     cin >> n >> m >> y1 >> x1 >> y2 >> x2;
 
-    auto grid = new Point *[m];
+    Point **grid = new Point *[m];
     for (size_t i = 0; i < m; i++) {
         grid[i] = new Point[n];
         for (size_t j = 0; j < n; j++) {
@@ -140,6 +140,11 @@ int main(int argc, char *argv[]) {
                 cout << "The shortest path from " << start << " to " << end << " is " << N.cost << "." << endl;
                 cout << "Path:" << endl;
                 print_path(N);
+                for (size_t i = 0; i < m; i++) {
+                    delete[] grid[i];
+                }
+                delete[] grid;
+                delete queue;
                 return 0;
             } else {
                 queue->enqueue(N);
@@ -155,7 +160,7 @@ int main(int argc, char *argv[]) {
         delete[] grid[i];
     }
     delete[] grid;
-
+    delete queue;
     return 0;
 }
 

@@ -303,3 +303,4 @@ CTestTestfile.cmake
 cmake-build-*
 *.tar
 *.tar.gz
+node_modules
