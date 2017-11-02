@@ -5,13 +5,11 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-
-#include <unistd.h>
-#include <fcntl.h>
-
 #include <getopt.h>
+
 #include "binary_heap.h"
 #include "unsorted_heap.h"
+#include "fib_heap.h"
 
 using namespace std;
 
@@ -22,9 +20,11 @@ public:
     bool reached = false;
     Point *predecessor = NULL;
 
-    struct compare_t {
-        bool operator()(const Point &a, const Point &b) const {
-            return a.cost < b.cost;
+    struct ptr_compare_t {
+        bool operator()(const Point *a, const Point *b) const {
+            if (a->cost != b->cost) return a->cost < b->cost;
+            if (a->y != b->y) return a->y < b->y;
+            return a->x < b->x;
         }
     };
 
@@ -32,23 +32,15 @@ public:
         out << "(" << p.y << ", " << p.x << ")";
         return out;
     }
+
+    Point() = default;
+
+    ~Point() = default;
 };
 
-void print_path(const Point &p) {
-    if (p.predecessor) print_path(*(p.predecessor));
-    cout << p << endl;
-}
-
-void redirect_input(const char *filename) {
-    int fin = open(filename, O_RDONLY);
-    close(STDIN_FILENO);
-    dup2(fin, STDIN_FILENO);
-}
-
-void redirect_output(const char *filename) {
-    int fout = open(filename, O_CREAT | O_TRUNC | O_WRONLY, 0644);
-    close(STDOUT_FILENO);
-    dup2(fout, STDOUT_FILENO);
+void print_path(ostream &out, const Point &p) {
+    if (p.predecessor) print_path(out, *(p.predecessor));
+    out << p << endl;
 }
 
 int main(int argc, char *argv[]) {
@@ -58,7 +50,7 @@ int main(int argc, char *argv[]) {
         const option long_options[] = {
                 {"verbose",        no_argument,       NULL, 'v'},
                 {"implementation", required_argument, NULL, 'i'},
-                {0, 0, 0,                                   0}
+                {0,                0, 0,                    0}
         };
         int c = getopt_long(argc, argv, "vi:", long_options, NULL);
         if (c == -1)break;
@@ -68,48 +60,58 @@ int main(int argc, char *argv[]) {
             impl = optarg;
         }
     }
-    priority_queue<Point, Point::compare_t> *queue;
-    if (impl == "BINARY") queue = new binary_heap<Point, Point::compare_t>();
-    else if (impl == "UNSORTED") queue = new unsorted_heap<Point, Point::compare_t>();
-    else if (impl == "FIBONACCI") queue = new unsorted_heap<Point, Point::compare_t>();
+
+    priority_queue<Point *, Point::ptr_compare_t> *queue;
+    if (impl == "BINARY") queue = new binary_heap<Point *, Point::ptr_compare_t>();
+    else if (impl == "UNSORTED") queue = new unsorted_heap<Point *, Point::ptr_compare_t>();
+    else if (impl == "FIBONACCI") queue = new fib_heap<Point *, Point::ptr_compare_t>();
     else return 0;
 
     if (argc < optind) return 0;
 
+    ifstream fin;
+    ofstream fout;
+    bool _fin = false, _fout = false;
+
     if (argc >= optind + 4) {
         if (string(argv[optind + 2]) == "<") {
-            redirect_input(argv[optind + 3]);
+            fin.open(argv[optind + 3]);
+            _fin = true;
         } else if (string(argv[optind + 2]) == ">") {
-            redirect_output(argv[optind + 3]);
+            fout.open(argv[optind + 3]);
+            _fout = true;
         }
     }
     if (argc >= optind + 2) {
         if (string(argv[optind]) == "<") {
-            redirect_input(argv[optind + 1]);
+            fin.open(argv[optind + 1]);
+            _fin = true;
         } else if (string(argv[optind]) == ">") {
-            redirect_output(argv[optind + 1]);
+            fout.open(argv[optind + 1]);
+            _fout = true;
         }
     }
 
-
     size_t m, n, x1, x2, y1, y2;
-    cin >> n >> m >> y1 >> x1 >> y2 >> x2;
+    if (_fin) fin >> n >> m >> y1 >> x1 >> y2 >> x2;
+    else cin >> n >> m >> y1 >> x1 >> y2 >> x2;
 
     Point **grid = new Point *[m];
     for (size_t i = 0; i < m; i++) {
         grid[i] = new Point[n];
         for (size_t j = 0; j < n; j++) {
-            auto &p = grid[i][j];
-            cin >> p.weight;
-            p.cost = p.weight;
-            p.x = i;
-            p.y = j;
+            auto p = &grid[i][j];
+            if (_fin) fin >> p->weight;
+            else cin >> p->weight;
+            p->cost = p->weight;
+            p->x = i;
+            p->y = j;
         }
     }
 
-    auto &start = grid[x1][y1];
-    auto &end = grid[x2][y2];
-    start.reached = true;
+    auto start = &grid[x1][y1];
+    auto end = &grid[x2][y2];
+    start->reached = true;
     queue->enqueue(start);
 
     size_t step = 0;
@@ -119,48 +121,72 @@ int main(int argc, char *argv[]) {
     while (!queue->empty()) {
         auto C = queue->dequeue_min();
         if (verbose) {
-            cout << "Step " << step << endl;
-            cout << "Choose cell " << C << " with accumulated length " << C.cost << "." << endl;
+            if (_fout) {
+                fout << "Step " << step << endl;
+                fout << "Choose cell " << *C << " with accumulated length " << C->cost << "." << endl;
+            } else {
+                cout << "Step " << step << endl;
+                cout << "Choose cell " << *C << " with accumulated length " << C->cost << "." << endl;
+            }
         }
         step++;
         for (int i = 0; i < 4; i++) {
-            auto x = C.x + DIR_X[i];
-            auto y = C.y + DIR_Y[i];
+            auto x = C->x + DIR_X[i];
+            auto y = C->y + DIR_Y[i];
             if (x < 0 || x >= m || y < 0 || y >= n) continue;
-            auto &N = grid[x][y];
-            if (N.reached) continue;
-            N.cost += C.cost;
-            N.reached = true;
-            N.predecessor = &grid[C.x][C.y];
-            if (N.x == x2 && N.y == y2) {
+            auto N = &grid[x][y];
+            if (N->reached) continue;
+            N->cost += C->cost;
+            N->reached = true;
+            N->predecessor = &grid[C->x][C->y];
+            if (N->x == x2 && N->y == y2) {
                 if (verbose) {
-                    cout << "Cell " << N << " with the accumulated length " << N.cost << " is the ending point."
-                         << endl;
+                    if (_fout) {
+                        fout << "Cell " << *N << " with accumulated length " << N->cost << " is the ending point."
+                             << endl;
+                    } else {
+                        cout << "Cell " << *N << " with accumulated length " << N->cost << " is the ending point."
+                             << endl;
+                    }
                 }
-                cout << "The shortest path from " << start << " to " << end << " is " << N.cost << "." << endl;
-                cout << "Path:" << endl;
-                print_path(N);
+                if (_fout) {
+                    fout << "The shortest path from " << *start << " to " << *end << " is " << N->cost << "." << endl;
+                    fout << "Path:" << endl;
+                    print_path(fout, *N);
+                } else {
+                    cout << "The shortest path from " << *start << " to " << *end << " is " << N->cost << "." << endl;
+                    cout << "Path:" << endl;
+                    print_path(cout, *N);
+                }
                 for (size_t i = 0; i < m; i++) {
                     delete[] grid[i];
                 }
                 delete[] grid;
                 delete queue;
+                if (_fin)fin.close();
+                if (_fout)fout.close();
                 return 0;
             } else {
                 queue->enqueue(N);
                 if (verbose) {
-                    cout << "Cell " << N << " with the accumulated length " << N.cost << " is added into the queue."
-                         << endl;
+                    if (_fout) {
+                        fout << "Cell " << *N << " with accumulated length " << N->cost << " is added into the queue."
+                             << endl;
+                    } else {
+                        cout << "Cell " << *N << " with accumulated length " << N->cost << " is added into the queue."
+                             << endl;
+                    }
                 }
             }
         }
     }
-
     for (size_t i = 0; i < m; i++) {
         delete[] grid[i];
     }
     delete[] grid;
     delete queue;
+    if (_fin)fin.close();
+    if (_fout)fout.close();
     return 0;
 }
 

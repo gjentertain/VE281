@@ -55,7 +55,7 @@ template<typename TYPE, typename COMP>
 binary_heap<TYPE, COMP>::binary_heap(COMP comp) {
     compare = comp;
     // Fill in the remaining lines if you need.
-    data.push_back(TYPE());
+    data.push_back(std::move(TYPE()));
 }
 
 template<typename TYPE, typename COMP>

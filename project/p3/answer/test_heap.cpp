@@ -1,9 +1,11 @@
 #include <iostream>
 #include "priority_queue.h"
 #include "binary_heap.h"
+#include "unsorted_heap.h"
 #include "fib_heap.h"
 #include <list>
 #include <algorithm>
+#include <ctime>
 
 using namespace std;
 
@@ -32,17 +34,18 @@ struct compare_t {
 };
 
 int main(int argc, char *argv[]) {
-    const int SIZE = 1000;
-    int a[SIZE] = {};
-    for (int i = 0; i < SIZE; i++) {
+    const int size = 5000;
+    vector<int> a(size);
+    for (int i = 0; i < size; i++) {
         a[i] = rand();
     }
     int i;
-    int size = sizeof(a) / sizeof(int);
-    cout << "Input: ";
-    for (i = 0; i < size; i++)
-        cout << a[i] << " " << flush;
-    cout << endl;
+    //cout << "Input: ";
+    //for (i = 0; i < size; i++)
+    //cout << a[i] << " " << flush;
+    //cout << endl;
+
+    auto c = clock();
 
     // We define a priority queue on int with the comparison functor as
     // compare_t defined above. For this queue, the larger the int value is,
@@ -51,12 +54,13 @@ int main(int argc, char *argv[]) {
     for (i = 0; i < size; i++)
         pql->enqueue(a[i]);
 
-    cout << "Sort in descending order: " << flush;
+    //cout << "Sort in descending order: " << flush;
     for (i = 0; i < size; i++) {
         int val = pql->dequeue_min();
-        cout << val << " " << flush;
+        //cout << val << " " << flush;
     }
-    cout << endl;
+    //cout << endl;
+    cout << clock() - c << endl;
     delete pql;
 
     // For some built-in types or library types, they may define a default less
@@ -72,12 +76,13 @@ int main(int argc, char *argv[]) {
     for (i = 0; i < size; i++)
         pqs->enqueue(a[i]);
 
-    cout << "Sort in ascending order: " << flush;
+    //cout << "Sort in ascending order: " << flush;
     for (i = 0; i < size; i++) {
         int val = pqs->dequeue_min();
-        cout << val << " " << flush;
+        //cout << val << " " << flush;
     }
-    cout << endl;
+    //cout << endl;
+
 
     delete pqs;
     return 0;

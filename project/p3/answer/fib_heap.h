@@ -78,14 +78,13 @@ fib_heap<TYPE, COMP>::fib_heap(COMP comp) {
 
 template<typename TYPE, typename COMP>
 void fib_heap<TYPE, COMP>::enqueue(const TYPE &val) {
-    if(root.empty()){
-        root.push_front(node(val));
+    if (root.empty()) {
+        root.push_front(std::move(node(val)));
         min = root.begin();
-    }
-    else if (compare(val, min->val)) {
-        min = root.insert(min, node(val));
+    } else if (compare(val, min->val)) {
+        min = root.insert(min, std::move(node(val)));
     } else {
-        root.insert(min, node(val));
+        root.insert(min, std::move(node(val)));
     }
     num_elements++;
 }
@@ -94,9 +93,14 @@ template<typename TYPE, typename COMP>
 TYPE fib_heap<TYPE, COMP>::dequeue_min() {
     if (this->empty()) return default_element;
     num_elements--;
+    auto temp = min->val;
+
+    if (num_elements == 0) {
+        root.clear();
+        return temp;
+    }
 
     root.splice(min, min->child);
-    auto temp = min->val;
     min = root.erase(min);
     if (min == root.end()) {
         min = root.begin();
@@ -106,9 +110,6 @@ TYPE fib_heap<TYPE, COMP>::dequeue_min() {
     auto size = (unsigned) (log(num_elements) / log(1.618)) + 1;
     bool isset[size] = {0};
     typename std::list<node>::iterator arr[size];
-    for (int i = 0; i < size; i++) {
-        arr[i] = root.end();
-    }
 
     auto root_size = root.size();
     for (auto i = 0; i < root_size; i++) {
@@ -118,10 +119,10 @@ TYPE fib_heap<TYPE, COMP>::dequeue_min() {
         unsigned depth = now->depth;
         while (isset[depth]) {
             if (compare(now->val, arr[depth]->val)) {
-                now->child.push_front(*arr[depth]);
+                now->child.push_front(std::move(*arr[depth]));
                 root.erase(arr[depth]);
             } else {
-                arr[depth]->child.push_front(*now);
+                arr[depth]->child.push_front(std::move(*now));
                 if (now == it) {
                     it = root.erase(now);
                     flag = false;

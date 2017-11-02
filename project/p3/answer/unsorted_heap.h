@@ -73,7 +73,7 @@ TYPE unsorted_heap<TYPE, COMP>::dequeue_min()
     // Fill in the body.
     if (this->empty()) return this->error;
     auto it = std::min_element(data.begin(), data.end(), compare);
-    auto min = *it;
+    auto min = std::move(*it);
     data.erase(it);
     return min;
 }
