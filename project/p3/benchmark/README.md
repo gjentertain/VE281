@@ -7,14 +7,14 @@ which receives test-cases and return each sorting algorithm's running time.
 
 ## Configuration
 
-If you are testing your own cpp source, you may need to edit `selection_wrapper.h` and `binding.gyp`.
+If you are testing your own cpp source, you may need to edit `queue_wrapper.h` and `binding.gyp`.
 
 Make sure to have `node` installed, and then run
 
 ```
 npm install -g node-gyp
 npm intall
-node-gyp configure build
+CXXFLAGS='-std=c++14' node-gyp configure build
 ```
 
 ## Benchmarking

@@ -50,7 +50,7 @@ int main(int argc, char *argv[]) {
         const option long_options[] = {
                 {"verbose",        no_argument,       NULL, 'v'},
                 {"implementation", required_argument, NULL, 'i'},
-                {0,                0, 0,                    0}
+                {0, 0, 0,                                   0}
         };
         int c = getopt_long(argc, argv, "vi:", long_options, NULL);
         if (c == -1)break;
@@ -71,38 +71,35 @@ int main(int argc, char *argv[]) {
 
     ifstream fin;
     ofstream fout;
-    bool _fin = false, _fout = false;
 
     if (argc >= optind + 4) {
         if (string(argv[optind + 2]) == "<") {
             fin.open(argv[optind + 3]);
-            _fin = true;
+            cin.rdbuf(fin.rdbuf());
         } else if (string(argv[optind + 2]) == ">") {
             fout.open(argv[optind + 3]);
-            _fout = true;
+            cout.rdbuf(fout.rdbuf());
         }
     }
     if (argc >= optind + 2) {
         if (string(argv[optind]) == "<") {
             fin.open(argv[optind + 1]);
-            _fin = true;
+            cin.rdbuf(fin.rdbuf());
         } else if (string(argv[optind]) == ">") {
             fout.open(argv[optind + 1]);
-            _fout = true;
+            cout.rdbuf(fout.rdbuf());
         }
     }
 
     size_t m, n, x1, x2, y1, y2;
-    if (_fin) fin >> n >> m >> y1 >> x1 >> y2 >> x2;
-    else cin >> n >> m >> y1 >> x1 >> y2 >> x2;
+    cin >> n >> m >> y1 >> x1 >> y2 >> x2;
 
     Point **grid = new Point *[m];
     for (size_t i = 0; i < m; i++) {
         grid[i] = new Point[n];
         for (size_t j = 0; j < n; j++) {
             auto p = &grid[i][j];
-            if (_fin) fin >> p->weight;
-            else cin >> p->weight;
+            cin >> p->weight;
             p->cost = p->weight;
             p->x = i;
             p->y = j;
@@ -121,13 +118,8 @@ int main(int argc, char *argv[]) {
     while (!queue->empty()) {
         auto C = queue->dequeue_min();
         if (verbose) {
-            if (_fout) {
-                fout << "Step " << step << endl;
-                fout << "Choose cell " << *C << " with accumulated length " << C->cost << "." << endl;
-            } else {
-                cout << "Step " << step << endl;
-                cout << "Choose cell " << *C << " with accumulated length " << C->cost << "." << endl;
-            }
+            cout << "Step " << step << endl;
+            cout << "Choose cell " << *C << " with accumulated length " << C->cost << "." << endl;
         }
         step++;
         for (int i = 0; i < 4; i++) {
@@ -141,41 +133,25 @@ int main(int argc, char *argv[]) {
             N->predecessor = &grid[C->x][C->y];
             if (N->x == x2 && N->y == y2) {
                 if (verbose) {
-                    if (_fout) {
-                        fout << "Cell " << *N << " with accumulated length " << N->cost << " is the ending point."
-                             << endl;
-                    } else {
-                        cout << "Cell " << *N << " with accumulated length " << N->cost << " is the ending point."
-                             << endl;
-                    }
+                    cout << "Cell " << *N << " with accumulated length " << N->cost << " is the ending point."
+                         << endl;
                 }
-                if (_fout) {
-                    fout << "The shortest path from " << *start << " to " << *end << " is " << N->cost << "." << endl;
-                    fout << "Path:" << endl;
-                    print_path(fout, *N);
-                } else {
-                    cout << "The shortest path from " << *start << " to " << *end << " is " << N->cost << "." << endl;
-                    cout << "Path:" << endl;
-                    print_path(cout, *N);
-                }
+                cout << "The shortest path from " << *start << " to " << *end << " is " << N->cost << "." << endl;
+                cout << "Path:" << endl;
+                print_path(cout, *N);
                 for (size_t i = 0; i < m; i++) {
                     delete[] grid[i];
                 }
                 delete[] grid;
                 delete queue;
-                if (_fin)fin.close();
-                if (_fout)fout.close();
+                fin.close();
+                fout.close();
                 return 0;
             } else {
                 queue->enqueue(N);
                 if (verbose) {
-                    if (_fout) {
-                        fout << "Cell " << *N << " with accumulated length " << N->cost << " is added into the queue."
-                             << endl;
-                    } else {
-                        cout << "Cell " << *N << " with accumulated length " << N->cost << " is added into the queue."
-                             << endl;
-                    }
+                    cout << "Cell " << *N << " with accumulated length " << N->cost << " is added into the queue."
+                         << endl;
                 }
             }
         }
@@ -185,8 +161,8 @@ int main(int argc, char *argv[]) {
     }
     delete[] grid;
     delete queue;
-    if (_fin)fin.close();
-    if (_fout)fout.close();
+    fin.close();
+    fout.close();
     return 0;
 }
 
