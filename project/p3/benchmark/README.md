@@ -1,4 +1,4 @@
-# Benchmark of sorting algorithms
+# Benchmark of priority queues
 
 ## Introduction
 
@@ -13,7 +13,7 @@ Make sure to have `node` installed, and then run
 
 ```
 npm install -g node-gyp
-npm intall
+npm install
 CXXFLAGS='-std=c++14' node-gyp configure build
 ```
 

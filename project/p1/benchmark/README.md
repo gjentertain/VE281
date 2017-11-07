@@ -13,7 +13,7 @@ Make sure to have `node` installed, and then run
 
 ```
 npm install -g node-gyp
-npm intall
+npm install
 node-gyp configure build
 ```
 
