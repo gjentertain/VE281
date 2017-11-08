@@ -129,24 +129,24 @@ We know that if we want to ensure the tree is a binary search tree, at least eve
 
 \section{}
 \begin{minted}{c++}
-node* getPredHelper(node* root, Key key, node* parent) {
+node *getPredHelper(node *root, Key key, node *parent) {
     if (root == NULL) return NULL;
-    if (root->key == key) {
+    if (key == root->key) {
         if (root->left) return findMax(root->left);
         return root;
     }
     node *temp = NULL;
-    if (root->key < key) temp = getPredHelper(root->left, key, root);
+    if (key < root->key) temp = getPredHelper(root->left, key, root);
     if (!temp) temp = getPredHelper(root->right, key, root);
     if (!temp) return NULL;
-    if (temp->key == key) {
-        if (!parent) return NULL;
+    if (key == temp->key) {
         if (root->key < key) return root;
+        if (!parent) return NULL;
     }
     return temp;
 }
 
-node* getPred(node* root, Key key) {
+node *getPred(node *root, Key key) {
     return getPredHelper(root, key, NULL);
 }
 \end{minted}
