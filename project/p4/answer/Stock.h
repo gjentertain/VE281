@@ -18,10 +18,9 @@ public:
     struct trade_t {
         Client *client;
         size_t timestamp, id, price, quantity;
-        Stock* stock;
+        Stock *stock;
         bool isSell;
     };
-
 private:
     struct trade_ptr_compare_buy {
         bool operator()(const trade_t *a, const trade_t *b) const {
@@ -41,16 +40,22 @@ private:
 
     std::set<trade_t *, trade_ptr_compare_buy> _buySet;
     std::set<trade_t *, trade_ptr_compare_sell> _sellSet;
-    std::vector<trade_t *> _timeTravler;
+    std::vector<trade_t *> _timeTraveler;
 
     Median<size_t> _median;
 
 public:
+    struct stock_ptr_compare {
+        bool operator()(const Stock *a, const Stock *b) const {
+            return a->_name < b->_name;
+        }
+    };
+
     explicit Stock(const std::string &name);
 
     ~Stock();
 
-    const std::string &name();
+    const std::string &name() const;
 
     void addBuy(Client *client, size_t id, size_t price, size_t quantity, int expire, size_t timestamp, bool verbose);
 
@@ -68,13 +73,13 @@ public:
 
     void removeLowestSell();
 
-    void removeExpiredTrade(trade_t* trade);
+    void removeExpiredTrade(trade_t *trade);
 
     void printMedian(size_t timestamp) const;
 
     void printMidPoint(size_t timestamp) const;
 
-    void printTimeTraveler();
+    void printTimeTraveler() const;
 };
 
 

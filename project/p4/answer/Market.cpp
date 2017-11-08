@@ -6,11 +6,11 @@
 #include "Market.h"
 
 Market::~Market() {
-    for (auto &pair:this->stocks) {
-        delete pair.second;
+    for (auto &stock:this->stocks) {
+        delete stock;
     }
-    for (auto &pair:this->clients) {
-        delete pair.second;
+    for (auto &client:this->clients) {
+        delete client;
     }
 }
 
@@ -31,19 +31,21 @@ void Market::initTimeTraveler(std::string name) {
 }
 
 Client *Market::getClient(const std::string &name) {
-    auto it = this->clients.find(name);
-    if (it == this->clients.end()) {
+    auto it = this->clientsMap.find(name);
+    if (it == this->clientsMap.end()) {
         auto client = new Client(name);
-        it = this->clients.insert({name, client}).first;
+        this->clients.insert(client);
+        it = this->clientsMap.insert({name, client}).first;
     }
     return it->second;
 }
 
 Stock *Market::getStock(const std::string &name) {
-    auto it = this->stocks.find(name);
-    if (it == this->stocks.end()) {
+    auto it = this->stocksMap.find(name);
+    if (it == this->stocksMap.end()) {
         auto stock = new Stock(name);
-        it = this->stocks.insert({name, stock}).first;
+        this->stocks.insert(stock);
+        it = this->stocksMap.insert({name, stock}).first;
     }
     return it->second;
 }
@@ -99,15 +101,15 @@ void Market::removeExpiredTrade(size_t timestamp) {
     _expireMap.erase(_expireMap.begin(), end);
 }
 
-void Market::printTickSummary() {
+void Market::printTickSummary() const {
     if (median) {
-        for (auto &pair:this->stocks) {
-            pair.second->printMedian(this->timestamp);
+        for (auto &stock:this->stocks) {
+            stock->printMedian(this->timestamp);
         }
     }
     if (midpoint) {
-        for (auto &pair:this->stocks) {
-            pair.second->printMidPoint(this->timestamp);
+        for (auto &stock:this->stocks) {
+            stock->printMidPoint(this->timestamp);
         }
     }
 }
@@ -126,12 +128,12 @@ void Market::printDaySummary() {
     std::cout << "Number of Completed Trades: " << tradeComplete << std::endl;
     std::cout << "Number of Shares Traded: " << shareTrade << std::endl;
     if (transfers) {
-        for (auto &pair:this->clients) {
-            pair.second->printTransfer();
+        for (auto &client:this->clients) {
+            client->printTransfer();
         }
     }
     for (auto &name: this->timeTravelers) {
-        stocks[name]->printTimeTraveler();
+        this->getStock(name)->printTimeTraveler();
     }
 }
 

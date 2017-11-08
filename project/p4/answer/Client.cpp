@@ -9,7 +9,7 @@ Client::Client(const std::string &name) {
     this->_name = name;
 }
 
-const std::string &Client::name() {
+const std::string &Client::name() const {
     return this->_name;
 }
 

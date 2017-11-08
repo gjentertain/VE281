@@ -11,19 +11,19 @@ Stock::Stock(const std::string &name) {
 }
 
 Stock::~Stock() {
-    for (auto &item : _timeTravler) {
+    for (auto &item : _timeTraveler) {
         delete item;
     }
 }
 
-const std::string &Stock::name() {
+const std::string &Stock::name() const {
     return this->_name;
 }
 
 void
 Stock::addBuy(Client *client, size_t id, size_t price, size_t quantity, int expire, size_t timestamp, bool verbose) {
     auto trade = new trade_t{client, timestamp, id, price, quantity, this, false};
-    _timeTravler.push_back(trade);
+    _timeTraveler.push_back(trade);
     while (matchBuy(trade, verbose)) {}
     if (expire != 0 && trade->quantity > 0) {
         this->_buySet.insert(trade);
@@ -36,7 +36,7 @@ Stock::addBuy(Client *client, size_t id, size_t price, size_t quantity, int expi
 void
 Stock::addSell(Client *client, size_t id, size_t price, size_t quantity, int expire, size_t timestamp, bool verbose) {
     auto trade = new trade_t{client, timestamp, id, price, quantity, this, true};
-    _timeTravler.push_back(trade);
+    _timeTraveler.push_back(trade);
     while (matchSell(trade, verbose)) {}
     if (expire != 0 && trade->quantity > 0) {
         this->_sellSet.insert(trade);
@@ -151,10 +151,10 @@ void Stock::printMidPoint(size_t timestamp) const {
     std::cout << std::endl;
 }
 
-void Stock::printTimeTraveler() {
+void Stock::printTimeTraveler() const {
     int sellPrice = -1, sellTime = -1, buyTime = -1, profit = 0;
     int minSell = -1, minSellTime = -1;
-    for (const auto &trade : _timeTravler) {
+    for (const auto &trade : _timeTraveler) {
         if (trade->isSell) {
             if (minSell < 0 || minSell > trade->price) {
                 minSell = (int) trade->price;

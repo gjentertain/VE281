@@ -13,8 +13,12 @@
 
 class Market {
 private:
-    std::map<std::string, Stock *> stocks;
-    std::map<std::string, Client *> clients;
+    std::set<Stock *, Stock::stock_ptr_compare> stocks;
+    std::unordered_map<std::string, Stock *> stocksMap;
+
+    std::set<Client *, Client::client_ptr_compare> clients;
+    std::unordered_map<std::string, Client *> clientsMap;
+
     std::multimap<size_t, Stock::trade_t *> _expireMap;
     std::stringstream ss;
     size_t timestamp = 0, tradeNum = 0;
@@ -25,7 +29,7 @@ private:
     bool midpoint = false;
     bool transfers = false;
     std::vector<std::string> timeTravelers;
-    Market() {};
+    Market() = default;
 public:
     ~Market();
 
@@ -45,13 +49,9 @@ public:
 
     void addExpiringTrade(Stock::trade_t *trade, size_t expire);
 
-    /**
-     * Remove all expired trade before timestamp
-     * @param timestamp
-     */
     void removeExpiredTrade(size_t timestamp);
 
-    void printTickSummary();
+    void printTickSummary() const;
 
     void nextTick(size_t newTimestamp);
 
