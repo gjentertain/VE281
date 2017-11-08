@@ -34,8 +34,7 @@ Client *Market::getClient(const std::string &name) {
     auto it = this->clients.find(name);
     if (it == this->clients.end()) {
         auto client = new Client(name);
-        this->clients.insert({name, client});
-        it = this->clients.find(name);
+        it = this->clients.insert({name, client}).first;
     }
     return it->second;
 }
@@ -44,8 +43,7 @@ Stock *Market::getStock(const std::string &name) {
     auto it = this->stocks.find(name);
     if (it == this->stocks.end()) {
         auto stock = new Stock(name);
-        this->stocks.insert({name, stock});
-        it = this->stocks.find(name);
+        it = this->stocks.insert({name, stock}).first;
     }
     return it->second;
 }
