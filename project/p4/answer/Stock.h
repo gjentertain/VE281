@@ -24,14 +24,14 @@ public:
 private:
     struct trade_ptr_compare_buy {
         bool operator()(const trade_t *a, const trade_t *b) const {
-            if (a->price == b->price) return a->id > b->id;
+            if (a->price == b->price) return a->id < b->id;
             return a->price > b->price;
         }
     };
 
     struct trade_ptr_compare_sell {
         bool operator()(const trade_t *a, const trade_t *b) const {
-            if (a->price == b->price) return a->id > b->id;
+            if (a->price == b->price) return a->id < b->id;
             return a->price < b->price;
         }
     };
