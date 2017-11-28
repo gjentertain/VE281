@@ -13,6 +13,26 @@
 #include <memory>
 #include <algorithm>
 
+class union_set {
+    std::list<union_set *> children;
+    union_set *parent = nullptr;
+
+    union_set *find_ancestor() {
+        if (parent) return parent->find_ancestor();
+        return this;
+    }
+
+public:
+    static bool merge(union_set *a, union_set *b) {
+        auto _a = a->find_ancestor();
+        auto _b = b->find_ancestor();
+        if (_a == _b) return false;
+        _a->children.emplace_back(_b);
+        _b->parent = _a;
+        return true;
+    }
+};
+
 struct node {
     std::vector<std::pair<node *, int>> neighbor;
     bool visited = false;
@@ -20,8 +40,9 @@ struct node {
     int cost = -1;
     node *predecessor = nullptr;
     size_t degree = 0;
+    union_set set;
 
-    node(size_t id) : id(id) {}
+    explicit node(size_t id) : id(id) { }
 
     struct comp {
         bool operator()(const node *a, const node *b) {
@@ -29,6 +50,11 @@ struct node {
             return a->cost < b->cost;
         };
     };
+};
+
+struct edge {
+    node *a, *b;
+    size_t weight;
 };
 
 struct graph {
@@ -59,6 +85,8 @@ int main(int argc, char *argv[]) {
         g.nodes.emplace_back(std::make_unique<node>(i));
     }
 
+    std::vector<edge> edgeQueue;
+
     while (!std::cin.eof()) {
         size_t src, dest, weight;
         std::string str;
@@ -71,6 +99,7 @@ int main(int argc, char *argv[]) {
         auto destNode = g.nodes[dest].get();
         srcNode->neighbor.emplace_back(destNode, weight);
         ++destNode->degree;
+        edgeQueue.emplace_back(edge{srcNode, destNode, weight});
     }
 
     std::set<node *, node::comp> set;
@@ -117,9 +146,6 @@ int main(int argc, char *argv[]) {
 
     if (destNode->visited && destNode->predecessor) {
         std::cout << "Shortest path length is " << destNode->cost << std::endl;
-        std::cout << "Shortest path is ";
-        print_path(destNode);
-        std::cout << std::endl;
     } else {
         std::cout << "No path exists!" << std::endl;
     }
@@ -144,6 +170,25 @@ int main(int argc, char *argv[]) {
         std::cout << "The graph is a DAG" << std::endl;
     } else {
         std::cout << "The graph is not a DAG" << std::endl;
+    }
+
+    std::sort(edgeQueue.begin(), edgeQueue.end(), [](const edge &a, const edge &b) {
+        return a.weight < b.weight;
+    });
+
+    size_t mst = 0;
+    size_t node_count = 1;
+    for (auto &now : edgeQueue) {
+        if (union_set::merge(&(now.a->set), &(now.b->set))) {
+            mst += now.weight;
+            if (++node_count == N) break;
+        }
+    }
+
+    if (node_count == N) {
+        std::cout << "The total weight of MST is " << mst << std::endl;
+    } else {
+        std::cout << "No MST exists!" << std::endl;
     }
 
     return 0;
