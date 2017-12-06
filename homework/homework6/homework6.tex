@@ -90,6 +90,74 @@ The minimum spanning tree is
 The time complexity is $O(V+E)$.
 
 \section{}
+\begin{algorithm}[H]
+	\begin{algorithmic}
+		\Require \\
+			A directed graph $G=(V,E)$ with real-valued edge reliability in the range $[0,1]$ \\
+			Two distinct nodes $s$ and $d$
+		\Ensure \\
+			A most reliable path from $s$ to $d$ if exists \\
+
+		\For {node $u$ \textbf{in} $G$}
+			\State $u.reached \gets false$
+			\State $u.probability \gets 0$
+			\State $u.predecessor \gets NULL$
+		\EndFor
+		\State $s.probability \gets 1$
+		\State push node $s$ into set $S$
+		\While {Set $S$ is not empty}
+			\State $u \gets$ pop the node with largest reliability in $S$
+			\State $u.reached \gets true$
+			\For {edge $(u,v)$ \textbf{in} edges with start node $u$}
+				\If {\textbf{not} $v.reached$ \textbf{and} $u.probability * (u,v).reliability > v.probability $ }
+					\State $v.probability \gets u.probability * (u,v).reliability$
+					\State $v.predecessor \gets u$
+				\EndIf
+			\EndFor
+		\EndWhile
+
+		\If {$d.predecessor == NULL$}
+			\State print ``No path exists"
+		\Else
+			\State print $d.predecessor$ recursively in reverse order
+		\EndIf
+	\end{algorithmic}
+\end{algorithm}
+
+\section{}
+\begin{algorithm}[H]
+	\begin{algorithmic}
+		\Require \\
+			A connected, undirected graph $G=(V,E)$
+		\Ensure \\
+			A path that traverses edge in E exactly once in each direction. \\
+
+		\For {node $u$ \textbf{in} $G$}
+			\State $u.reached \gets false$
+			\State $u.depth \gets 0$
+		\EndFor
+		\State $s \gets$ an arbitrary node in $G$
+		\State \Call {DFS}{$s$}
+		\\
+		\Function {DFS}{node $u$}
+			\State $u.reached \gets true$
+			\For {edge $(u,v)$ \textbf{in} edges adjacent to $u$}
+				\If {\textbf{not} $v.reached$}
+					\State $v.depth \gets u.depth + 1$
+					\State traverse $u \to v$
+					\State \Call {DFS}{$v$}
+					\State traverse $v \to u$
+				\ElsIf {$v.depth > u.depth$}
+					\State traverse $u \to v$
+					\State traverse $v \to u$
+				\EndIf
+			\EndFor
+		\EndFunction
+
+	\end{algorithmic}
+\end{algorithm}
+
+\section{}
 
 
 \end{document}
