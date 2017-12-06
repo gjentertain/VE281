@@ -1,0 +1,469 @@
+\noindent Iteration 1\\
+Edge a -> b = 6\\
+a: distance = 0, predecessor = null\\
+b: distance = inf, predecessor = null\\
+updated: b: distance = 6, predecessor = a\\
+Edge a -> c = 4\\
+a: distance = 0, predecessor = null\\
+c: distance = inf, predecessor = null\\
+updated: c: distance = 4, predecessor = a\\
+Edge b -> c = 1\\
+b: distance = 6, predecessor = a\\
+c: distance = 4, predecessor = a\\
+nothing happened\\
+Edge b -> d = 5\\
+b: distance = 6, predecessor = a\\
+d: distance = inf, predecessor = null\\
+updated: d: distance = 11, predecessor = b\\
+Edge b -> f = 6\\
+b: distance = 6, predecessor = a\\
+f: distance = inf, predecessor = null\\
+updated: f: distance = 12, predecessor = b\\
+Edge c -> e = 3\\
+c: distance = 4, predecessor = a\\
+e: distance = inf, predecessor = null\\
+updated: e: distance = 7, predecessor = c\\
+Edge d -> e = 1\\
+d: distance = 11, predecessor = b\\
+e: distance = 7, predecessor = c\\
+nothing happened\\
+Edge e -> b = -2\\
+e: distance = 7, predecessor = c\\
+b: distance = 6, predecessor = a\\
+updated: b: distance = 5, predecessor = e\\
+Edge e -> f = 6\\
+e: distance = 7, predecessor = c\\
+f: distance = 12, predecessor = b\\
+nothing happened\\
+Edge f -> d = -3\\
+f: distance = 12, predecessor = b\\
+d: distance = 11, predecessor = b\\
+updated: d: distance = 9, predecessor = f\\
+
+\begin{center}
+\begin{tikzpicture}[>/.tip={Latex}]
+\draw (-2.5,0) 	node (a) [draw,shape=circle,minimum size=0.8cm] {a};
+\draw (-1,1)    node (b) [draw,shape=circle,minimum size=0.8cm] {b};
+\draw (-1,-1)   node (c) [draw,shape=circle,minimum size=0.8cm] {c};
+\draw (1,1)     node (d) [draw,shape=circle,minimum size=0.8cm] {d};
+\draw (1,-1)    node (e) [draw,shape=circle,minimum size=0.8cm] {e};
+\draw (2.5,0)   node (f) [draw,shape=circle,minimum size=0.8cm] {f};
+\draw[->] (a) edge node [above left] {6} (b);
+\draw[->] (a) edge node [below left] {4} (c);
+\draw[->] (b) edge node [left] {1} (c);
+\draw[->] (b) edge node [above] {5} (d);
+\draw[->] (b) edge node [below left] {6} (f);
+\draw[->] (c) edge node [below] {3} (e);
+\draw[->] (d) edge node [below left] {1} (e);
+\draw[->] (e) edge node [below left] {-2} (b);
+\draw[->] (e) edge node [below right] {6} (f);
+\draw[->] (f) edge node [above right] {-3} (d);
+    
+\node [left]  at (a.west)  {0};
+\node [above] at (b.north) {5};
+\node [below] at (c.south) {4};
+\node [above] at (d.north) {9};
+\node [below] at (e.south) {7};
+\node [right] at (f.east)  {12};
+
+\end{tikzpicture}
+\end{center}
+    
+\noindent Iteration 2\\
+Edge a -> b = 6\\
+a: distance = 0, predecessor = null\\
+b: distance = 5, predecessor = e\\
+nothing happened\\
+Edge a -> c = 4\\
+a: distance = 0, predecessor = null\\
+c: distance = 4, predecessor = a\\
+nothing happened\\
+Edge b -> c = 1\\
+b: distance = 5, predecessor = e\\
+c: distance = 4, predecessor = a\\
+nothing happened\\
+Edge b -> d = 5\\
+b: distance = 5, predecessor = e\\
+d: distance = 9, predecessor = f\\
+nothing happened\\
+Edge b -> f = 6\\
+b: distance = 5, predecessor = e\\
+f: distance = 12, predecessor = b\\
+updated: f: distance = 11, predecessor = b\\
+Edge c -> e = 3\\
+c: distance = 4, predecessor = a\\
+e: distance = 7, predecessor = c\\
+nothing happened\\
+Edge d -> e = 1\\
+d: distance = 9, predecessor = f\\
+e: distance = 7, predecessor = c\\
+nothing happened\\
+Edge e -> b = -2\\
+e: distance = 7, predecessor = c\\
+b: distance = 5, predecessor = e\\
+nothing happened\\
+Edge e -> f = 6\\
+e: distance = 7, predecessor = c\\
+f: distance = 11, predecessor = b\\
+nothing happened\\
+Edge f -> d = -3\\
+f: distance = 11, predecessor = b\\
+d: distance = 9, predecessor = f\\
+updated: d: distance = 8, predecessor = f\\
+
+\begin{center}
+\begin{tikzpicture}[>/.tip={Latex}]
+\draw (-2.5,0) 	node (a) [draw,shape=circle,minimum size=0.8cm] {a};
+\draw (-1,1)    node (b) [draw,shape=circle,minimum size=0.8cm] {b};
+\draw (-1,-1)   node (c) [draw,shape=circle,minimum size=0.8cm] {c};
+\draw (1,1)     node (d) [draw,shape=circle,minimum size=0.8cm] {d};
+\draw (1,-1)    node (e) [draw,shape=circle,minimum size=0.8cm] {e};
+\draw (2.5,0)   node (f) [draw,shape=circle,minimum size=0.8cm] {f};
+\draw[->] (a) edge node [above left] {6} (b);
+\draw[->] (a) edge node [below left] {4} (c);
+\draw[->] (b) edge node [left] {1} (c);
+\draw[->] (b) edge node [above] {5} (d);
+\draw[->] (b) edge node [below left] {6} (f);
+\draw[->] (c) edge node [below] {3} (e);
+\draw[->] (d) edge node [below left] {1} (e);
+\draw[->] (e) edge node [below left] {-2} (b);
+\draw[->] (e) edge node [below right] {6} (f);
+\draw[->] (f) edge node [above right] {-3} (d);
+    
+\node [left]  at (a.west)  {0};
+\node [above] at (b.north) {5};
+\node [below] at (c.south) {4};
+\node [above] at (d.north) {8};
+\node [below] at (e.south) {7};
+\node [right] at (f.east)  {11};
+
+\end{tikzpicture}
+\end{center}
+    
+\noindent Iteration 3\\
+Edge a -> b = 6\\
+a: distance = 0, predecessor = null\\
+b: distance = 5, predecessor = e\\
+nothing happened\\
+Edge a -> c = 4\\
+a: distance = 0, predecessor = null\\
+c: distance = 4, predecessor = a\\
+nothing happened\\
+Edge b -> c = 1\\
+b: distance = 5, predecessor = e\\
+c: distance = 4, predecessor = a\\
+nothing happened\\
+Edge b -> d = 5\\
+b: distance = 5, predecessor = e\\
+d: distance = 8, predecessor = f\\
+nothing happened\\
+Edge b -> f = 6\\
+b: distance = 5, predecessor = e\\
+f: distance = 11, predecessor = b\\
+nothing happened\\
+Edge c -> e = 3\\
+c: distance = 4, predecessor = a\\
+e: distance = 7, predecessor = c\\
+nothing happened\\
+Edge d -> e = 1\\
+d: distance = 8, predecessor = f\\
+e: distance = 7, predecessor = c\\
+nothing happened\\
+Edge e -> b = -2\\
+e: distance = 7, predecessor = c\\
+b: distance = 5, predecessor = e\\
+nothing happened\\
+Edge e -> f = 6\\
+e: distance = 7, predecessor = c\\
+f: distance = 11, predecessor = b\\
+nothing happened\\
+Edge f -> d = -3\\
+f: distance = 11, predecessor = b\\
+d: distance = 8, predecessor = f\\
+nothing happened\\
+
+\begin{center}
+\begin{tikzpicture}[>/.tip={Latex}]
+\draw (-2.5,0) 	node (a) [draw,shape=circle,minimum size=0.8cm] {a};
+\draw (-1,1)    node (b) [draw,shape=circle,minimum size=0.8cm] {b};
+\draw (-1,-1)   node (c) [draw,shape=circle,minimum size=0.8cm] {c};
+\draw (1,1)     node (d) [draw,shape=circle,minimum size=0.8cm] {d};
+\draw (1,-1)    node (e) [draw,shape=circle,minimum size=0.8cm] {e};
+\draw (2.5,0)   node (f) [draw,shape=circle,minimum size=0.8cm] {f};
+\draw[->] (a) edge node [above left] {6} (b);
+\draw[->] (a) edge node [below left] {4} (c);
+\draw[->] (b) edge node [left] {1} (c);
+\draw[->] (b) edge node [above] {5} (d);
+\draw[->] (b) edge node [below left] {6} (f);
+\draw[->] (c) edge node [below] {3} (e);
+\draw[->] (d) edge node [below left] {1} (e);
+\draw[->] (e) edge node [below left] {-2} (b);
+\draw[->] (e) edge node [below right] {6} (f);
+\draw[->] (f) edge node [above right] {-3} (d);
+    
+\node [left]  at (a.west)  {0};
+\node [above] at (b.north) {5};
+\node [below] at (c.south) {4};
+\node [above] at (d.north) {8};
+\node [below] at (e.south) {7};
+\node [right] at (f.east)  {11};
+
+\end{tikzpicture}
+\end{center}
+    
+\noindent Iteration 4\\
+Edge a -> b = 6\\
+a: distance = 0, predecessor = null\\
+b: distance = 5, predecessor = e\\
+nothing happened\\
+Edge a -> c = 4\\
+a: distance = 0, predecessor = null\\
+c: distance = 4, predecessor = a\\
+nothing happened\\
+Edge b -> c = 1\\
+b: distance = 5, predecessor = e\\
+c: distance = 4, predecessor = a\\
+nothing happened\\
+Edge b -> d = 5\\
+b: distance = 5, predecessor = e\\
+d: distance = 8, predecessor = f\\
+nothing happened\\
+Edge b -> f = 6\\
+b: distance = 5, predecessor = e\\
+f: distance = 11, predecessor = b\\
+nothing happened\\
+Edge c -> e = 3\\
+c: distance = 4, predecessor = a\\
+e: distance = 7, predecessor = c\\
+nothing happened\\
+Edge d -> e = 1\\
+d: distance = 8, predecessor = f\\
+e: distance = 7, predecessor = c\\
+nothing happened\\
+Edge e -> b = -2\\
+e: distance = 7, predecessor = c\\
+b: distance = 5, predecessor = e\\
+nothing happened\\
+Edge e -> f = 6\\
+e: distance = 7, predecessor = c\\
+f: distance = 11, predecessor = b\\
+nothing happened\\
+Edge f -> d = -3\\
+f: distance = 11, predecessor = b\\
+d: distance = 8, predecessor = f\\
+nothing happened\\
+
+\begin{center}
+\begin{tikzpicture}[>/.tip={Latex}]
+\draw (-2.5,0) 	node (a) [draw,shape=circle,minimum size=0.8cm] {a};
+\draw (-1,1)    node (b) [draw,shape=circle,minimum size=0.8cm] {b};
+\draw (-1,-1)   node (c) [draw,shape=circle,minimum size=0.8cm] {c};
+\draw (1,1)     node (d) [draw,shape=circle,minimum size=0.8cm] {d};
+\draw (1,-1)    node (e) [draw,shape=circle,minimum size=0.8cm] {e};
+\draw (2.5,0)   node (f) [draw,shape=circle,minimum size=0.8cm] {f};
+\draw[->] (a) edge node [above left] {6} (b);
+\draw[->] (a) edge node [below left] {4} (c);
+\draw[->] (b) edge node [left] {1} (c);
+\draw[->] (b) edge node [above] {5} (d);
+\draw[->] (b) edge node [below left] {6} (f);
+\draw[->] (c) edge node [below] {3} (e);
+\draw[->] (d) edge node [below left] {1} (e);
+\draw[->] (e) edge node [below left] {-2} (b);
+\draw[->] (e) edge node [below right] {6} (f);
+\draw[->] (f) edge node [above right] {-3} (d);
+    
+\node [left]  at (a.west)  {0};
+\node [above] at (b.north) {5};
+\node [below] at (c.south) {4};
+\node [above] at (d.north) {8};
+\node [below] at (e.south) {7};
+\node [right] at (f.east)  {11};
+
+\end{tikzpicture}
+\end{center}
+    
+\noindent Iteration 5\\
+Edge a -> b = 6\\
+a: distance = 0, predecessor = null\\
+b: distance = 5, predecessor = e\\
+nothing happened\\
+Edge a -> c = 4\\
+a: distance = 0, predecessor = null\\
+c: distance = 4, predecessor = a\\
+nothing happened\\
+Edge b -> c = 1\\
+b: distance = 5, predecessor = e\\
+c: distance = 4, predecessor = a\\
+nothing happened\\
+Edge b -> d = 5\\
+b: distance = 5, predecessor = e\\
+d: distance = 8, predecessor = f\\
+nothing happened\\
+Edge b -> f = 6\\
+b: distance = 5, predecessor = e\\
+f: distance = 11, predecessor = b\\
+nothing happened\\
+Edge c -> e = 3\\
+c: distance = 4, predecessor = a\\
+e: distance = 7, predecessor = c\\
+nothing happened\\
+Edge d -> e = 1\\
+d: distance = 8, predecessor = f\\
+e: distance = 7, predecessor = c\\
+nothing happened\\
+Edge e -> b = -2\\
+e: distance = 7, predecessor = c\\
+b: distance = 5, predecessor = e\\
+nothing happened\\
+Edge e -> f = 6\\
+e: distance = 7, predecessor = c\\
+f: distance = 11, predecessor = b\\
+nothing happened\\
+Edge f -> d = -3\\
+f: distance = 11, predecessor = b\\
+d: distance = 8, predecessor = f\\
+nothing happened\\
+
+\begin{center}
+\begin{tikzpicture}[>/.tip={Latex}]
+\draw (-2.5,0) 	node (a) [draw,shape=circle,minimum size=0.8cm] {a};
+\draw (-1,1)    node (b) [draw,shape=circle,minimum size=0.8cm] {b};
+\draw (-1,-1)   node (c) [draw,shape=circle,minimum size=0.8cm] {c};
+\draw (1,1)     node (d) [draw,shape=circle,minimum size=0.8cm] {d};
+\draw (1,-1)    node (e) [draw,shape=circle,minimum size=0.8cm] {e};
+\draw (2.5,0)   node (f) [draw,shape=circle,minimum size=0.8cm] {f};
+\draw[->] (a) edge node [above left] {6} (b);
+\draw[->] (a) edge node [below left] {4} (c);
+\draw[->] (b) edge node [left] {1} (c);
+\draw[->] (b) edge node [above] {5} (d);
+\draw[->] (b) edge node [below left] {6} (f);
+\draw[->] (c) edge node [below] {3} (e);
+\draw[->] (d) edge node [below left] {1} (e);
+\draw[->] (e) edge node [below left] {-2} (b);
+\draw[->] (e) edge node [below right] {6} (f);
+\draw[->] (f) edge node [above right] {-3} (d);
+    
+\node [left]  at (a.west)  {0};
+\node [above] at (b.north) {5};
+\node [below] at (c.south) {4};
+\node [above] at (d.north) {8};
+\node [below] at (e.south) {7};
+\node [right] at (f.east)  {11};
+
+\end{tikzpicture}
+\end{center}
+    
+\noindent Iteration 6\\
+Edge a -> b = 6\\
+a: distance = 0, predecessor = null\\
+b: distance = 5, predecessor = e\\
+nothing happened\\
+Edge a -> c = 4\\
+a: distance = 0, predecessor = null\\
+c: distance = 4, predecessor = a\\
+nothing happened\\
+Edge b -> c = 1\\
+b: distance = 5, predecessor = e\\
+c: distance = 4, predecessor = a\\
+nothing happened\\
+Edge b -> d = 5\\
+b: distance = 5, predecessor = e\\
+d: distance = 8, predecessor = f\\
+nothing happened\\
+Edge b -> f = 6\\
+b: distance = 5, predecessor = e\\
+f: distance = 11, predecessor = b\\
+nothing happened\\
+Edge c -> e = 3\\
+c: distance = 4, predecessor = a\\
+e: distance = 7, predecessor = c\\
+nothing happened\\
+Edge d -> e = 1\\
+d: distance = 8, predecessor = f\\
+e: distance = 7, predecessor = c\\
+nothing happened\\
+Edge e -> b = -2\\
+e: distance = 7, predecessor = c\\
+b: distance = 5, predecessor = e\\
+nothing happened\\
+Edge e -> f = 6\\
+e: distance = 7, predecessor = c\\
+f: distance = 11, predecessor = b\\
+nothing happened\\
+Edge f -> d = -3\\
+f: distance = 11, predecessor = b\\
+d: distance = 8, predecessor = f\\
+nothing happened\\
+
+\begin{center}
+\begin{tikzpicture}[>/.tip={Latex}]
+\draw (-2.5,0) 	node (a) [draw,shape=circle,minimum size=0.8cm] {a};
+\draw (-1,1)    node (b) [draw,shape=circle,minimum size=0.8cm] {b};
+\draw (-1,-1)   node (c) [draw,shape=circle,minimum size=0.8cm] {c};
+\draw (1,1)     node (d) [draw,shape=circle,minimum size=0.8cm] {d};
+\draw (1,-1)    node (e) [draw,shape=circle,minimum size=0.8cm] {e};
+\draw (2.5,0)   node (f) [draw,shape=circle,minimum size=0.8cm] {f};
+\draw[->] (a) edge node [above left] {6} (b);
+\draw[->] (a) edge node [below left] {4} (c);
+\draw[->] (b) edge node [left] {1} (c);
+\draw[->] (b) edge node [above] {5} (d);
+\draw[->] (b) edge node [below left] {6} (f);
+\draw[->] (c) edge node [below] {3} (e);
+\draw[->] (d) edge node [below left] {1} (e);
+\draw[->] (e) edge node [below left] {-2} (b);
+\draw[->] (e) edge node [below right] {6} (f);
+\draw[->] (f) edge node [above right] {-3} (d);
+    
+\node [left]  at (a.west)  {0};
+\node [above] at (b.north) {5};
+\node [below] at (c.south) {4};
+\node [above] at (d.north) {8};
+\node [below] at (e.south) {7};
+\node [right] at (f.east)  {11};
+
+\end{tikzpicture}
+\end{center}
+    
+\noindent Check negative cycle\\
+Edge a -> b = 6\\
+a: distance = 0, predecessor = null\\
+b: distance = 5, predecessor = e\\
+nothing happened\\
+Edge a -> c = 4\\
+a: distance = 0, predecessor = null\\
+c: distance = 4, predecessor = a\\
+nothing happened\\
+Edge b -> c = 1\\
+b: distance = 5, predecessor = e\\
+c: distance = 4, predecessor = a\\
+nothing happened\\
+Edge b -> d = 5\\
+b: distance = 5, predecessor = e\\
+d: distance = 8, predecessor = f\\
+nothing happened\\
+Edge b -> f = 6\\
+b: distance = 5, predecessor = e\\
+f: distance = 11, predecessor = b\\
+nothing happened\\
+Edge c -> e = 3\\
+c: distance = 4, predecessor = a\\
+e: distance = 7, predecessor = c\\
+nothing happened\\
+Edge d -> e = 1\\
+d: distance = 8, predecessor = f\\
+e: distance = 7, predecessor = c\\
+nothing happened\\
+Edge e -> b = -2\\
+e: distance = 7, predecessor = c\\
+b: distance = 5, predecessor = e\\
+nothing happened\\
+Edge e -> f = 6\\
+e: distance = 7, predecessor = c\\
+f: distance = 11, predecessor = b\\
+nothing happened\\
+Edge f -> d = -3\\
+f: distance = 11, predecessor = b\\
+d: distance = 8, predecessor = f\\
+nothing happened\\
+
+\noindent Graph doesn't contain a negative-weight cycle

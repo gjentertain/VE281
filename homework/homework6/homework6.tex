@@ -9,8 +9,10 @@
 \usepackage{caption}
 \usepackage{indentfirst}
 \usepackage{array}
+\usepackage{multicol}
 %\renewcommand\arraystretch{2}
 \usepackage{tikz}
+\usetikzlibrary{arrows.meta}
 \usepackage{multicol}
 \usepackage{algorithm}
 \usepackage{algorithmicx}
@@ -40,51 +42,51 @@ In Kruskal's algorithm, we take the shortest edge and connect two nodes if it do
 
 The minimum spanning tree is
 \begin{center}
-	\begin{tikzpicture}
-		\draw (-2.5,0) 	node (a) [draw,shape=circle,minimum size=0.8cm] {a};
-		\draw (-1,1) 		node (b) [draw,shape=circle,minimum size=0.8cm] {b};
-		\draw (-1,-1) 	node (c) [draw,shape=circle,minimum size=0.8cm] {c};
-		\draw (1,1) 		node (d) [draw,shape=circle,minimum size=0.8cm] {d};
-		\draw (1,-1) 		node (e) [draw,shape=circle,minimum size=0.8cm] {e};
-		\draw (2.5,0) 	node (f) [draw,shape=circle,minimum size=0.8cm] {f};
-		\draw (b) edge node [right] {1} (c);
-		\draw (a) edge node [above left] {2} (b);
-		\draw (c) edge node [above] {3} (e);
-		\draw (e) edge node [below right] {5} (f);
-		\draw (e) edge node [left] {4} (d);
-	\end{tikzpicture}
+  	\begin{tikzpicture}
+    		\draw (-2.5,0) 	node (a) [draw,shape=circle,minimum size=0.8cm] {a};
+    		\draw (-1,1) 		node (b) [draw,shape=circle,minimum size=0.8cm] {b};
+    		\draw (-1,-1) 	node (c) [draw,shape=circle,minimum size=0.8cm] {c};
+    		\draw (1,1) 		node (d) [draw,shape=circle,minimum size=0.8cm] {d};
+    		\draw (1,-1) 		node (e) [draw,shape=circle,minimum size=0.8cm] {e};
+    		\draw (2.5,0) 	node (f) [draw,shape=circle,minimum size=0.8cm] {f};
+    		\draw (b) edge node [right] {1} (c);
+    		\draw (a) edge node [above left] {2} (b);
+        \draw (c) edge node [above] {3} (e);
+    		\draw (e) edge node [below right] {5} (f);
+    		\draw (e) edge node [left] {4} (d);
+	 \end{tikzpicture}
 \end{center}
 
 \section{}
 \begin{algorithm}[H]
-	\begin{algorithmic}
-		\Require \\
-			A directed acyclic graph $G=(V,E)$ with real-valued edge weights \\
-			Two distinct nodes $s$ and $d$
-		\Ensure \\
-			A longest weighted path from $s$ to $d$ if exists \\
+  	\begin{algorithmic}
+    		\Require \\
+    			A directed acyclic graph $G=(V,E)$ with real-valued edge weights \\
+    			Two distinct nodes $s$ and $d$
+    		\Ensure \\
+    			A longest weighted path from $s$ to $d$ if exists \\
 
-		\State $L \gets G$ sorted in topological order
-		\State Remove nodes located before $s$ or after $d$ from $L$
-		\State Remove node $s$ from $L$
-		\State $s.distance \gets 0$
-		\State $s.predecessor \gets null$
-		\For {node $v$ \textbf{in} $L$}
-		\State $v.distance \gets -\infty$
-		\State $v.predecessor \gets null$
-			\For {edge $(u,v)$ \textbf{in} edges with end node $v$}
-				\If {$u.distance + (u,v).weight > v.distance$}
-					\State $v.distance \gets u.distance + (u,v).weight$
-					\State $v.predecessor \gets u$
-				\EndIf
-			\EndFor
-		\EndFor
-		\If {$d.predecessor == null$}
-			\State print ``No path exists"
-		\Else
-			\State print $d.predecessor$ recursively in reverse order
-		\EndIf
-	\end{algorithmic}
+    		\State $L \gets G$ sorted in topological order
+    		\State Remove nodes located before $s$ or after $d$ from $L$
+    		\State Remove node $s$ from $L$
+    		\State $s.distance \gets 0$
+    		\State $s.predecessor \gets null$
+    		\For {node $v$ \textbf{in} $L$}
+    		    \State $v.distance \gets -\infty$
+    		    \State $v.predecessor \gets null$
+            \For {edge $(u,v)$ \textbf{in} edges with end node $v$}
+    				    \If {$u.distance + (u,v).weight > v.distance$}
+    				        \State $v.distance \gets u.distance + (u,v).weight$
+                    \State $v.predecessor \gets u$
+                \EndIf
+    		    \EndFor
+    		\EndFor
+    		\If {$d.predecessor == null$}
+            \State print ``No path exists"
+    		\Else
+    			  \State print $d.predecessor$ recursively in reverse order
+    		\EndIf
+  	\end{algorithmic}
 \end{algorithm}
 
 The time complexity is $O(V+E)$.
@@ -156,6 +158,15 @@ The time complexity is $O(V+E)$.
 
 	\end{algorithmic}
 \end{algorithm}
+
+\section{}
+
+\begin{multicols}{2}
+\input{ex5.tex}
+\end{multicols}
+
+\section{}
+According to the algorithm, if $L(v, j)$ doesn't change in one iteration, then in the next iteration, since the initial condition and order are the same, $L(v, j+1)$ won't change as well. So when the iteration is completed, the value of $L(v, |V|)$ equals to $L(v, j)$, and in the procedure of checking negative cycles, $L(v, |V|+1)$ also doesn't change. So I can stop and claim that there is no negative cycle and the length of the shortest $s-v$ path is $L(v, j)$ for all $v \in V $.
 
 \section{}
 
