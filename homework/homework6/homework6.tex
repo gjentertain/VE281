@@ -68,10 +68,10 @@ The minimum spanning tree is
 		\State Remove nodes located before $s$ or after $d$ from $L$
 		\State Remove node $s$ from $L$
 		\State $s.distance \gets 0$
-		\State $s.predecessor \gets NULL$
+		\State $s.predecessor \gets null$
 		\For {node $v$ \textbf{in} $L$}
 		\State $v.distance \gets -\infty$
-		\State $v.predecessor \gets NULL$
+		\State $v.predecessor \gets null$
 			\For {edge $(u,v)$ \textbf{in} edges with end node $v$}
 				\If {$u.distance + (u,v).weight > v.distance$}
 					\State $v.distance \gets u.distance + (u,v).weight$
@@ -79,7 +79,7 @@ The minimum spanning tree is
 				\EndIf
 			\EndFor
 		\EndFor
-		\If {$d.predecessor == NULL$}
+		\If {$d.predecessor == null$}
 			\State print ``No path exists"
 		\Else
 			\State print $d.predecessor$ recursively in reverse order
@@ -101,7 +101,7 @@ The time complexity is $O(V+E)$.
 		\For {node $u$ \textbf{in} $G$}
 			\State $u.reached \gets false$
 			\State $u.probability \gets 0$
-			\State $u.predecessor \gets NULL$
+			\State $u.predecessor \gets null$
 		\EndFor
 		\State $s.probability \gets 1$
 		\State push node $s$ into set $S$
@@ -116,7 +116,7 @@ The time complexity is $O(V+E)$.
 			\EndFor
 		\EndWhile
 
-		\If {$d.predecessor == NULL$}
+		\If {$d.predecessor == null$}
 			\State print ``No path exists"
 		\Else
 			\State print $d.predecessor$ recursively in reverse order
