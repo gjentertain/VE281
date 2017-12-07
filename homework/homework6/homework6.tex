@@ -21,7 +21,7 @@
 \renewcommand{\algorithmicensure}{\textbf{Output:}}
 \usepackage{minted}
 \usemintedstyle{autumn}
-\geometry{left=3.0 cm,right=3.0 cm,top=3.0 cm,bottom=4.0 cm}
+\geometry{left=3.0 cm,right=3.0 cm,top=2.5 cm,bottom=3.0 cm}
 \renewcommand{\thesection}{Ex. \arabic{section}}
 \title{VE281 Writing Assignment Five}
 \author{Liu Yihao 515370910207}
@@ -31,6 +31,7 @@
 \maketitle
 
 \section{}
+\begin{multicols}{2}
 In Kruskal's algorithm, we take the shortest edge and connect two nodes if it doesn't form a cycle.
 \begin{enumerate}
 	\item Connect b and c
@@ -39,6 +40,8 @@ In Kruskal's algorithm, we take the shortest edge and connect two nodes if it do
 	\item Connect e and f
 	\item Connect e and d
 \end{enumerate}
+
+\columnbreak
 
 The minimum spanning tree is
 \begin{center}
@@ -53,9 +56,11 @@ The minimum spanning tree is
     		\draw (a) edge node [above left] {2} (b);
         \draw (c) edge node [above] {3} (e);
     		\draw (e) edge node [below right] {5} (f);
-    		\draw (e) edge node [left] {4} (d);
+    		\draw (e) edge node [left] {6} (d);
 	 \end{tikzpicture}
 \end{center}
+
+\end{multicols}
 
 \section{}
 \begin{algorithm}[H]
@@ -169,40 +174,62 @@ The time complexity is $O(V+E)$.
 According to the algorithm, if $L(v, j)$ doesn't change in one iteration, then in the next iteration, since the initial condition and order are the same, $L(v, j+1)$ won't change as well. So when the iteration is completed, the value of $L(v, |V|)$ equals to $L(v, j)$, and in the procedure of checking negative cycles, $L(v, |V|+1)$ also doesn't change. So I can stop and claim that there is no negative cycle and the length of the shortest $s-v$ path is $L(v, j)$ for all $v \in V $.
 
 \section{}
+
+In the main loop, there are two loops, which have time complexity $O(n^2)$. And when we want to find $\min\limits_{1\leqslant k\leqslant i-1}\{s[k][i-1]\}$, iterating from $i-1$ down to 1, if $s[k_0][i-1]=+\infty$, we can claim that for all $k<k_0$, $s[k_0][i-1]=+\infty$, so the loop can be break. And we know that at most $M/2$ words are on one line, so this iteration have at most $M/2$ times. Since $M$ is a constant in the problem, the overall time complexity is $O(n^2)$.
+
 \begin{algorithm}[H]
 	\begin{algorithmic}
 		\Require \\
 			A sequence of $n$ words of lengths $l_1,l_2,\cdots,l_n$
 		\Ensure \\
 			Print a paragraph of $n$ words neatly so that the sum of cubes of extra space is minimum
-		
-		\For {$i \gets 1$ \textbf{to} $n$}
-		    
-		\EndFor
-		
-		\For {node $u$ \textbf{in} $G$}
-			\State $u.reached \gets false$
-			\State $u.depth \gets 0$
-		\EndFor
-		\State $s \gets$ an arbitrary node in $G$
-		\State \Call {DFS}{$s$}
-		\\
-		\Function {DFS}{node $u$}
-			\State $u.reached \gets true$
-			\For {edge $(u,v)$ \textbf{in} edges adjacent to $u$}
-				\If {\textbf{not} $v.reached$}
-					\State $v.depth \gets u.depth + 1$
-					\State traverse $u \to v$
-					\State \Call {DFS}{$v$}
-					\State traverse $v \to u$
-				\ElsIf {$v.depth > u.depth$}
-					\State traverse $u \to v$
-					\State traverse $v \to u$
-				\EndIf
-			\EndFor
-		\EndFunction
 
+		\For {$i \gets 1$ \textbf{to} $n$}
+        \State $sum \gets 0$
+        \For {$j \gets i$ \textbf{to} $n$}
+            \State $sum \gets sum + l_j$
+            \State $space \gets M - j + i - sum$
+            \If {$space >= 0$}
+                \State $v[i][j] \gets space * space * space$
+            \Else
+                \State $v[i][j] \gets +\infty$
+            \EndIf
+        \EndFor
+        \If {$v[i][n] != +\infty$}
+            \State $v[i][n] \gets 0$
+        \EndIf
+		\EndFor
+
+    \For {$i \gets 1$ \textbf{to} $n$}
+        \State $s[0][i] \gets v[0][i]$
+    \EndFor
+
+    \For {$j \gets 2$ \textbf{to} $n$}
+        \For {$i \gets j$ \textbf{downto} $2$}
+            \If {$v[i][j] == +\infty$}
+                \State \textbf{break}
+            \EndIf
+            \State $value \gets \min\limits_{1\leqslant k\leqslant i-1}\{s[k][i-1]\}, index \gets k$
+            \State $s[i][j] \gets v[i][j] + value$
+            \State $p[i][j] \gets index$
+        \EndFor
+    \EndFor
+
+    \State $min \gets \min\limits_{1\leqslant i\leqslant i-1}\{s[i][n]\}, begin \gets i$
+    \State $end \gets n$
+    \While {$begin>0$}
+        \State prepends $\{begin,end\}$ to $list$
+        \State $temp \gets begin$
+        \State $begin \gets p[begin][end]$
+        \State $end \gets temp - 1$
+    \EndWhile
+    \State prepends $\{begin,end\}$ to $list$
+	\For {$\{begin,end\}$ \textbf{in} $list$}
+		\State print words between $begin$ and $end$, ended with a new line
+	\EndFor	
 	\end{algorithmic}
 \end{algorithm}
+
+
 
 \end{document}
