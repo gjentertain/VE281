@@ -169,6 +169,40 @@ The time complexity is $O(V+E)$.
 According to the algorithm, if $L(v, j)$ doesn't change in one iteration, then in the next iteration, since the initial condition and order are the same, $L(v, j+1)$ won't change as well. So when the iteration is completed, the value of $L(v, |V|)$ equals to $L(v, j)$, and in the procedure of checking negative cycles, $L(v, |V|+1)$ also doesn't change. So I can stop and claim that there is no negative cycle and the length of the shortest $s-v$ path is $L(v, j)$ for all $v \in V $.
 
 \section{}
+\begin{algorithm}[H]
+	\begin{algorithmic}
+		\Require \\
+			A sequence of $n$ words of lengths $l_1,l_2,\cdots,l_n$
+		\Ensure \\
+			Print a paragraph of $n$ words neatly so that the sum of cubes of extra space is minimum
+		
+		\For {$i \gets 1$ \textbf{to} $n$}
+		    
+		\EndFor
+		
+		\For {node $u$ \textbf{in} $G$}
+			\State $u.reached \gets false$
+			\State $u.depth \gets 0$
+		\EndFor
+		\State $s \gets$ an arbitrary node in $G$
+		\State \Call {DFS}{$s$}
+		\\
+		\Function {DFS}{node $u$}
+			\State $u.reached \gets true$
+			\For {edge $(u,v)$ \textbf{in} edges adjacent to $u$}
+				\If {\textbf{not} $v.reached$}
+					\State $v.depth \gets u.depth + 1$
+					\State traverse $u \to v$
+					\State \Call {DFS}{$v$}
+					\State traverse $v \to u$
+				\ElsIf {$v.depth > u.depth$}
+					\State traverse $u \to v$
+					\State traverse $v \to u$
+				\EndIf
+			\EndFor
+		\EndFunction
 
+	\end{algorithmic}
+\end{algorithm}
 
 \end{document}
