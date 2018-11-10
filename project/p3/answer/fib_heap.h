@@ -64,7 +64,7 @@ private:
     typename std::list<node> root;
     typename std::list<node>::iterator min;
     unsigned num_elements = 0;
-    const TYPE &default_element = TYPE();
+    const TYPE default_element = TYPE();
 };
 
 // Add the definitions of the member functions here. Please refer to
@@ -108,7 +108,8 @@ TYPE fib_heap<TYPE, COMP>::dequeue_min() {
 
     auto it = min;
     auto size = (unsigned) (log(num_elements) / log(1.618)) + 1;
-    bool isset[size] = {0};
+    std::vector<int> isset(size, 0);
+//    bool isset[size] = {0};
     typename std::list<node>::iterator arr[size];
 
     auto root_size = root.size();
